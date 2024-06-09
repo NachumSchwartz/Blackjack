@@ -16,7 +16,8 @@ public class GameStart {
         }
     }
     private static void newGame(){
-        System.out.println("New Game");
+        InternalGameObjects.setNewGameStats();
+        InternalGameObjects.setDeck();
     }
 
     private static void continueGame(){
