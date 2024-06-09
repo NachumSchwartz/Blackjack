@@ -48,4 +48,10 @@ public class Main extends JFrame {
 	public static void main(String[] args) {
 		Main mainGame = new Main();
 	}
+
+	// test add Paul
+	public void testMethodThatDoesNothing(){
+		// this method does nothing
+	}
 }
+
