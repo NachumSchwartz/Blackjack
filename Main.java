@@ -33,12 +33,12 @@ public class Main extends JFrame {
 
 		//Game Panel
 		gamePanel = new GamePanel();
-		add(gamePanel);
+		this.add(gamePanel);
 		
 		//Frame properties
 		this.setTitle("Blackjack");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLayout(null);
+		//this.setLayout(null);
 		this.setSize(1235, 815);
 		this.setLocationRelativeTo(null);
 		
