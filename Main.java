@@ -49,9 +49,5 @@ public class Main extends JFrame {
 		Main mainGame = new Main();
 	}
 
-	// test add Paul
-	public void testMethodThatDoesNothing(){
-		// this method does nothing
-	}
 }
 
