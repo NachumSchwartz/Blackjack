@@ -15,7 +15,7 @@ class GameMenuAL implements ActionListener{
 
 class DealButtonAL implements ActionListener{
     public void actionPerformed(ActionEvent e){  
-         
+         GamePlay.deal();
     }
 }
 
