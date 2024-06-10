@@ -1,5 +1,10 @@
 public class GameStart {
-    static void choiceSwitch(String choice){
+    InternalGame internalGame;
+    public GameStart(InternalGame internalGame){
+        this.internalGame = internalGame;
+    }
+
+    void choiceSwitch(String choice){
         switch (choice) {
             case "New Game":
                 newGame();
@@ -15,18 +20,18 @@ public class GameStart {
                 break;
         }
     }
-    private static void newGame(){
-        InternalGameObjects.setNewGameStats();
-        InternalGameObjects.setDeck();
+    private void newGame(){
+        internalGame.setNewGameStats();
+        internalGame.setDeck();
     }
 
-    private static void loadGame(){
+    private void loadGame(){
         System.out.println("Load Game");
     }
-    private static void saveGame(){
+    private void saveGame(){
         System.out.println("Save Game");
     }
-    private static void tutorial(){
+    private void tutorial(){
         System.out.println("Tutorial");
     }
 

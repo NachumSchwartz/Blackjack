@@ -12,25 +12,39 @@ public class Hand {
         cards.add(card);
     }
 
-    int calculateHand(){
+    int calculateHand() {
         int total = 0;
-        for(Card card : cards){
-            total += convertCardValue(card.getValue());
+        int aceCount = 0;
+        for (Card card : cards) {
+            int cardValue;
+            switch (card.getValue()) {
+                case "J":
+                case "Q":
+                case "K":
+                    cardValue = 10;
+                    break;
+                case "A":
+                    cardValue = 11;
+                    aceCount++;
+                    break;
+                default:
+                    cardValue = Integer.parseInt(card.getValue());
+                    break;
+            }
+            total += cardValue;
+        }
+
+        // Handle Aces dynamically
+        while (total > 21 && aceCount > 0) {
+            total -= 10;
+            aceCount--;
         }
 
         return total;
     }
 
-    private int convertCardValue(String value){
-        int numValue = 0;
-        switch(value){
-            case "J","Q","K","A":
-                numValue = 10;
-                break;
-            default:
-                numValue = Integer.parseInt(value);
-        }
-        return numValue;
+    List<Card> getCards() {
+        return cards;
     }
     
     @Override

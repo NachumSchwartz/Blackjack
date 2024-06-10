@@ -20,10 +20,10 @@ public class Deck {
             }
         }
         
-        shuffleDeck();
+        shuffle();
     }
     
-    public void shuffleDeck() {
+    public void shuffle() {
         Collections.shuffle(deck);
     }
 
