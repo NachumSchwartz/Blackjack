@@ -4,8 +4,8 @@ public class GameStart {
             case "New Game":
                 newGame();
                 break;
-            case "Continue Game":
-                continueGame();
+            case "Load Game":
+                loadGame();
                 break;
             case "Save Game":
                 saveGame();
@@ -20,8 +20,8 @@ public class GameStart {
         InternalGameObjects.setDeck();
     }
 
-    private static void continueGame(){
-        System.out.println("Continue Game");
+    private static void loadGame(){
+        System.out.println("Load Game");
     }
     private static void saveGame(){
         System.out.println("Save Game");
