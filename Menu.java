@@ -1,7 +1,7 @@
 import javax.swing.JComboBox;
 
 public class Menu extends JComboBox<String>{
-	private static String menuOptions[] = {"New Game", "Continue Game", "Save Game", "Tutorial"};
+	private static String menuOptions[] = {"New Game", "Load Game", "Save Game", "Tutorial"};
 
     public Menu(){
         super(menuOptions);
