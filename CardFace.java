@@ -5,32 +5,35 @@ import java.awt.GridBagLayout;
 
 import java.awt.Color;
 
+// CardFace class
 public class CardFace extends JPanel{
-    private String value;
-    private String suit;
-    private Color color;
+    private String value; // value of the card
+    private String suit; // suit of the card
+    private Color color; // color of the card
 
+    // CardFace constructor
     public CardFace(String value, String suit){
-        this.value = value;
-        this.suit = suit;
-        if(suit.equals("Hearts")||suit.equals("Diamonds")){
-            this.color = Color.red;
-        }else if(suit.equals("Spades")||suit.equals("Clubs")){
-            this.color = Color.black;
+        this.value = value; // set value
+        this.suit = suit; // set suit
+        if(suit.equals("Hearts")||suit.equals("Diamonds")){ // if suit is Hearts or Diamonds
+            this.color = Color.red; // set color to red
+        }else if(suit.equals("Spades")||suit.equals("Clubs")){ // if suit is Spades or Clubs
+            this.color = Color.black; // set color to black
         }
 
-        Border colorBorder = BorderFactory.createMatteBorder(10, 10, 10, 10, this.color);
-        Border emptyBorder = BorderFactory.createEmptyBorder(2,2,2,2);
-        Border compoundOutside = BorderFactory.createCompoundBorder(colorBorder, emptyBorder);
-        Border wholeBorder = BorderFactory.createCompoundBorder(compoundOutside, colorBorder);
+        // create borders
+        Border colorBorder = BorderFactory.createMatteBorder(10, 10, 10, 10, this.color); // create matte border
+        Border emptyBorder = BorderFactory.createEmptyBorder(2,2,2,2); // create empty border
+        Border compoundOutside = BorderFactory.createCompoundBorder(colorBorder, emptyBorder); // create compound border
+        Border wholeBorder = BorderFactory.createCompoundBorder(compoundOutside, colorBorder); // create compound border
 
-        setBorder(wholeBorder);
-        setPreferredSize(new Dimension(200, 300));
-        setBackground(Color.white);
-        setLayout(new GridBagLayout());
+        setBorder(wholeBorder); // set border
+        setPreferredSize(new Dimension(200, 300)); // set preferred size
+        setBackground(Color.white); // set background color
+        setLayout(new GridBagLayout()); // set layout
         
-        Emblem emblem = new Emblem(value, suit, this.color); 
+        Emblem emblem = new Emblem(value, suit, this.color); // create emblem
     
-        add(emblem); 
+        add(emblem); // add emblem
     }
 }
