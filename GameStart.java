@@ -1,7 +1,10 @@
 public class GameStart {
     InternalGame internalGame;
-    public GameStart(InternalGame internalGame){
+    GamePanel gui;
+
+    public GameStart(InternalGame internalGame, GamePanel gui){
         this.internalGame = internalGame;
+        this.gui = gui;
     }
 
     void choiceSwitch(String choice){
@@ -23,6 +26,7 @@ public class GameStart {
     private void newGame(){
         internalGame.setNewGameStats();
         internalGame.setDeck();
+        gui.getDealButton().setVisible(true);
     }
 
     private void loadGame(){

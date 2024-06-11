@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 
 public class GamePanel extends JPanel implements ActionListener{
 	private InternalGame internal = new InternalGame(this);
-	private GameStart startGame = new GameStart(internal);
+	private GameStart startGame = new GameStart(internal, this);
 
 	private List<JLabel> playerCardPanels;
 	private List<JLabel> dealerCardPanels;
@@ -25,6 +25,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		dealButton = new JButton("Deal");
 		dealButton.setBounds(10, 50, 100, 30); // Example position
 		dealButton.addActionListener(this);
+		dealButton.setVisible(false);
 		add(dealButton);
 
 		// Initialize game buttons
