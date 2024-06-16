@@ -22,6 +22,19 @@ public class Deck {
         
         shuffle();
     }
+
+    //for test mode change values to test values
+    public Deck(boolean test){
+        deck = new ArrayList<>();
+        String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
+        String[] values = {"A","A","A","A","A","A","A","A","A","A"};
+
+        for (String suit : suits) {
+            for (String value : values) {
+                deck.add(new Card(value, suit));
+            }
+        }
+    }
     
     public void shuffle() {
         Collections.shuffle(deck);

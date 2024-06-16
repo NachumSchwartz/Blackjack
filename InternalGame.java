@@ -8,12 +8,14 @@ public class InternalGame{
     private Hand playerHand;
     private Hand dealerHand;
     private GamePanel gui;
+    boolean test;
 
-    public InternalGame(GamePanel gui){
+    public InternalGame(GamePanel gui, boolean test){//test is true if game is in test mode
         this.wins = 0;
         this.losses = 0;
         this.ties = 0;
         this.gui = gui;
+        this.test = test;
     }
     
     //setters and getters
@@ -23,7 +25,11 @@ public class InternalGame{
         ties = 0;
     }
     void setDeck(){
-        deck = new Deck();
+        if(test){//if test is true, test deck is instantiated
+            deck = new Deck(test);
+        }else{
+            deck = new Deck();
+        }
     }
     int getWins(){
         return wins;

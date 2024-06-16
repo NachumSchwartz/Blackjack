@@ -6,15 +6,17 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 
 public class GamePanel extends JPanel implements ActionListener{
-	private InternalGame internal = new InternalGame(this);
-	private GameStart startGame = new GameStart(internal, this);
-
+	private InternalGame internal; 
+	private GameStart startGame; 
 	private List<JLabel> playerCardPanels;
 	private List<JLabel> dealerCardPanels;
 	private JButton dealButton, hitButton, standButton, hintButton;
 	private Menu menu; 
 
-	public GamePanel(){
+	public GamePanel(boolean test){//test is true if game is in test mode
+		internal = new InternalGame(this, test);
+		startGame = new GameStart(internal, this);
+
 		setLayout(null); // Disable layout manager for absolute positioning
 
 		menu = new Menu();
