@@ -11,6 +11,7 @@
  * Blackjack Project
  */
 
+//class that runs the game
 public class Main{
     public static void main(String[] args) {
         boolean test = false;
@@ -21,7 +22,7 @@ public class Main{
             test = true;
         }
             
-        GameFrame frame = new GameFrame(test);
+        GameFrame frame = new GameFrame(test); // create a new GameFrame
     }
 }
 
