@@ -7,8 +7,8 @@ import java.awt.event.ActionEvent;
 
 // GamePanel class
 public class GamePanel extends JPanel implements ActionListener{
-	private InternalGame internal = new InternalGame(this); // Internal game logic
-	private GameStart startGame = new GameStart(internal, this); // Start game logic
+	private InternalGame internal; // Internal game logic
+	private GameStart startGame; // Start game logic
 
 	private List<JLabel> playerCardPanels; // List of player card panels
 	private List<JLabel> dealerCardPanels; // List of dealer card panels
