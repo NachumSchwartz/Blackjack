@@ -47,7 +47,7 @@ public class Hand {
         
         
         // Handle Aces dynamically
-        for(int i = 1; total > 21 && i <= aceCount; i++){// while the total is greater than 21 and there are aces in the hand
+        for(int i = 1; total > 21 && i <= aceCount; i++){// if the total is > 21, subtract 10 per Ace until total is <= 21
             total -= 10;
         }
                      

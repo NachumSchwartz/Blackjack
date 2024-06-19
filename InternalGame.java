@@ -10,6 +10,12 @@ public class InternalGame{
     private Hand dealerHand; //dealer's hand
     private GamePanel gui; //game panel
     private boolean test;
+    private enum Outcomes{
+        WIN,
+        LOSS,
+        TIE
+    }
+
 
     public InternalGame(GamePanel gui, boolean test){//constructor - test is true if game is in test mode 
         this.wins = 0; //initialize wins
@@ -69,16 +75,30 @@ public class InternalGame{
         gui.showGameButtons(); //show game buttons
         gui.getDealButton().setEnabled(false);//disable the Deal button after clicked
         gui.updateCardPanels(); //update card panels
+
+        //check for blackjack after first deal
+        if(playerHand.calculateHand() == 21){
+            if(dealerHand.calculateHand() == 21){ // if dealer also == 21 --> TIE, else --> player WIN
+                concludeRound(Outcomes.TIE);
+            }else{
+                concludeRound(Outcomes.WIN);
+            }
+        }
     }
 
     void hit() { //method to hit
 		playerHand.receiveCard(deck.drawCard()); //player receives a card
 		gui.updateCardPanels(); //update card panels
-		// Check for player's bust after hitting
-		if (playerHand.calculateHand() > 21) { //if player's hand is greater than 21
-			JOptionPane.showMessageDialog(gui, "You busted!"); //show message
-			gui.resetGame(); //reset game
-		}
+	
+		if (playerHand.calculateHand() > 21) { //if player's hand > 21 --> player busts --> LOSS
+            concludeRound(Outcomes.LOSS);
+		}else if(playerHand.calculateHand() == 21){ //if player's hand == 21 --> check if dealer == 21
+            if(dealerHand.calculateHand() == 21){ // if dealer also == 21 --> TIE, else --> player WIN
+                concludeRound(Outcomes.TIE);
+            }else{
+                concludeRound(Outcomes.WIN);
+            }
+        }
 	}
 
     void stand() { //method to stand
@@ -86,8 +106,17 @@ public class InternalGame{
 		while (dealerHand.calculateHand() < 17) { //while dealer's hand is less than 17
 			dealerHand.receiveCard(deck.drawCard()); //dealer receives a card
 		}
+
 		gui.updateCardPanels(); //update card panels
-		determineWinner(); //determine the winner
+
+        if(dealerHand.calculateHand() > 21 ||
+         playerHand.calculateHand() > dealerHand.calculateHand()){
+            concludeRound(Outcomes.WIN);
+        }else if(playerHand.calculateHand() < dealerHand.calculateHand()){
+            concludeRound(Outcomes.LOSS);
+        }else if(playerHand.calculateHand() == dealerHand.calculateHand()){
+            concludeRound(Outcomes.TIE);
+        }
 	}
 
     void hint() { //method to give hint
@@ -99,16 +128,22 @@ public class InternalGame{
 		}
 	}
 
-    private void determineWinner() { //method to determine the winner
-		int playerTotal = playerHand.calculateHand(); //player's total
-		int dealerTotal = dealerHand.calculateHand(); //dealer's total
-		if (dealerTotal > 21 || playerTotal > dealerTotal) { //if dealer's total is greater than 21 or player's total is greater than dealer's total
-			JOptionPane.showMessageDialog(gui, "You win!");
-		} else if (playerTotal < dealerTotal) { //if player's total is less than dealer's total
-			JOptionPane.showMessageDialog(gui, "Dealer wins!");
-		} else { //if it's a tie
-			JOptionPane.showMessageDialog(gui, "It's a tie!");
-		}
-		gui.resetGame(); //reset game
-	}
+    private void concludeRound(Outcomes outcome){ //method to update stats, display message and reset GUI
+        switch (outcome) {
+            case WIN:
+                this.wins++;
+                JOptionPane.showMessageDialog(gui, "You win!");
+                break;
+            case LOSS:
+                this.losses++;
+                JOptionPane.showMessageDialog(gui, "Dealer wins!");
+                break;
+            case TIE:
+                this.ties++;
+                JOptionPane.showMessageDialog(gui, "It's a tie!");
+                break;
+        }
+
+        gui.resetGame(); //reset GUI
+    }
 }
