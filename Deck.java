@@ -24,7 +24,7 @@ public class Deck {
     }
 
     //for test mode change values to test values
-    public Deck(boolean test){
+    public Deck(boolean test){ //constructor with boolean parameter
         deck = new ArrayList<>();
         String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
         String[] values = {"A","A","A","A","A","A","A","A","A","A"};

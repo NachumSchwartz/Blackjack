@@ -9,14 +9,14 @@ public class InternalGame{
     private Hand playerHand; //player's hand
     private Hand dealerHand; //dealer's hand
     private GamePanel gui; //game panel
-    boolean test;
+    private boolean test;
 
-    public InternalGame(GamePanel gui, boolean test){//test is true if game is in test mode //constructor
+    public InternalGame(GamePanel gui, boolean test){//constructor - test is true if game is in test mode 
         this.wins = 0; //initialize wins
         this.losses = 0; //initialize losses
         this.ties = 0; //initialize ties
         this.gui = gui; //initialize gui
-        this.test = test;
+        this.test = test; //initialize test
     }
     
     //setters and getters
@@ -58,8 +58,8 @@ public class InternalGame{
             setDeck(); //set new deck
         }
 
-        playerHand = new Hand(); //create a new player's hand
-        dealerHand = new Hand(); //create a new dealer's hand
+        playerHand = new Hand(test); //create a new player's hand
+        dealerHand = new Hand(test); //create a new dealer's hand
         
         playerHand.receiveCard(deck.drawCard()); //player receives a card
         playerHand.receiveCard(deck.drawCard()); //player receives a card

@@ -4,18 +4,25 @@ import java.util.List;
 // Represents a hand of cards
 public class Hand {
     private List<Card> cards;  // the cards in the hand
+    private int aceCount = 0; // the number of aces in the hand
+    private boolean test; // "test" is true if game is in test mode
 
-    public Hand(){// constructor
+    public Hand(boolean test){// constructor
         cards = new ArrayList<Card>(); // create a new ArrayList
+        this.test = test;
     }
 
     void receiveCard(Card card){ // receive a card
         cards.add(card); // add the card to the hand
+
+        //if an Ace is received, increment Hand's aceCount
+        if(card.getValue().equals("A")){
+            aceCount++;
+        }
     }
 
     int calculateHand() { // calculate the value of the hand
         int total = 0; // the total value of the hand
-        int aceCount = 0; // the number of aces in the hand
         for (Card card : cards) { // for each card in the hand
             int cardValue; // the value of the card
             switch (card.getValue()) { // switch on the value of the card
@@ -26,7 +33,6 @@ public class Hand {
                     break;
                 case "A": // if the card is an Ace
                     cardValue = 11; // set the value of the card to 11
-                    aceCount++; // increment the number of aces
                     break;
                 default:
                     cardValue = Integer.parseInt(card.getValue()); // set the value of the card to the integer value of the card
@@ -34,11 +40,19 @@ public class Hand {
             }
             total += cardValue; // add the value of the card to the total
         }
-
+    
+        if(test){ // test mode print out
+            System.out.println("Total before Aces handling: " + total);
+        }
+        
+        
         // Handle Aces dynamically
-        while (total > 21 && aceCount > 0) { // while the total is greater than 21 and there are aces in the hand
-            total -= 10; // subtract 10 from the total
-            aceCount--; // decrement the number of aces
+        for(int i = 1; total > 21 && i <= aceCount; i++){// while the total is greater than 21 and there are aces in the hand
+            total -= 10;
+        }
+                     
+        if(test){ // test mode print out
+            System.out.println("Total after Aces handling: " + total);
         }
 
         return total; // return the total value of the hand
@@ -46,6 +60,10 @@ public class Hand {
 
     List<Card> getCards() { // get the cards in the hand
         return cards; // return the cards in the hand
+    }
+
+    int getAceCount(){ // get the number of aces in the hand
+        return aceCount; // return the number of aces in the hand
     }
     
     @Override
