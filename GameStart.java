@@ -27,7 +27,7 @@ public class GameStart {
     private void newGame(){ //method to start a new game
         internalGame.setNewGameStats(); //set new game stats
         internalGame.setDeck(); //set new deck
-        gui.getDealButton().setVisible(true); //set deal button to visible
+        gui.setNewGame(); // set up GUI with new game
     }
 
     private void loadGame(){ //method to load a game

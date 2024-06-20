@@ -10,9 +10,10 @@ public class GamePanel extends JPanel implements ActionListener{
 	private InternalGame internal; // Internal game logic
 	private GameStart startGame; // Start game logic
 
-	private List<JLabel> playerCardPanels; // List of player card panels
-	private List<JLabel> dealerCardPanels; // List of dealer card panels
+	private List<JLabel> playerCardPanels, dealerCardPanels; // List of player and dealer card panels
+	private JPanel playerPanel, dealerPanel, leaderBoard;
 	private JButton dealButton, hitButton, standButton, hintButton; // Game buttons
+	private JLabel winsLabel, variableWinsLabel, lossesLabel, variableLossesLabel, tiesLabel, variableTiesLabel;
 	private Menu menu; // Menu object
 
 	public GamePanel(boolean test){//test is true if game is in test mode
@@ -56,8 +57,8 @@ public class GamePanel extends JPanel implements ActionListener{
 		// Initialize card panels
 		playerCardPanels = new ArrayList<>(); // Initialize player card panels
 		dealerCardPanels = new ArrayList<>(); // Initialize dealer card panels
-		JPanel playerPanel = new JPanel(); // Initialize player panel
-		JPanel dealerPanel = new JPanel(); // Initialize dealer panel
+		playerPanel = new JPanel(); // Initialize player panel
+		dealerPanel = new JPanel(); // Initialize dealer panel
 		playerPanel.setLayout(new GridLayout(1, 11)); // Set layout for player panel
 		dealerPanel.setLayout(new GridLayout(1, 11)); // Set layout for dealer panel
 
@@ -78,8 +79,36 @@ public class GamePanel extends JPanel implements ActionListener{
 		playerPanel.setBounds(10, 350, 760, 100); // Example position
 		dealerPanel.setBounds(10, 200, 760, 100); // Example position
 
-		add(playerPanel); // Add player panel to panel
-		add(dealerPanel); // Add dealer panel to panel
+		add(playerPanel); // Add player panel to main panel
+		add(dealerPanel); // Add dealer panel to main panel
+
+		//Leaderboard Panel
+		leaderBoard = new JPanel();
+		leaderBoard.setLayout(new GridLayout(3, 2));
+		leaderBoard.setOpaque(false);
+		leaderBoard.setBounds(700, 10, 100, 100);
+		leaderBoard.setVisible(false);
+
+		winsLabel = new JLabel("Wins: ");
+		variableWinsLabel = new JLabel(Integer.toString(internal.getWins()));
+		lossesLabel = new JLabel("Losses: ");
+		variableLossesLabel = new JLabel(Integer.toString(internal.getLosses()));
+		tiesLabel = new JLabel("Ties: ");
+		variableTiesLabel = new JLabel(Integer.toString(internal.getTies()));
+
+		leaderBoard.add(winsLabel);
+		leaderBoard.add(variableWinsLabel);
+		leaderBoard.add(lossesLabel);
+		leaderBoard.add(variableLossesLabel);
+		leaderBoard.add(tiesLabel);
+		leaderBoard.add(variableTiesLabel);
+
+		add(leaderBoard); // Add leaderboard to main panel
+	 }
+
+	void setNewGame(){
+		leaderBoard.setVisible(true);
+		dealButton.setVisible(true);
 	}
 
 	void showGameButtons() { // Show game buttons
@@ -128,8 +157,14 @@ public class GamePanel extends JPanel implements ActionListener{
 		hitButton.setVisible(false); // Hide game buttons
 		standButton.setVisible(false); // Hide game buttons
 		hintButton.setVisible(false); // Hide game buttons
-		dealButton.setEnabled(true); // Re-enable the Deal button for new game
+		dealButton.setEnabled(true); // Re-enable the Deal button for new round
+		
 		clearCardPanels(); // Clear card panels
+
+		// update leaderboard
+		variableWinsLabel.setText(Integer.toString(internal.getWins()));
+		variableLossesLabel.setText(Integer.toString(internal.getLosses()));
+		variableTiesLabel.setText(Integer.toString(internal.getTies()));
 	}
 
 	JButton getDealButton(){ // Get deal button

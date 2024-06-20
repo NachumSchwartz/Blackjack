@@ -131,15 +131,15 @@ public class InternalGame{
     private void concludeRound(Outcomes outcome){ //method to update stats, display message and reset GUI
         switch (outcome) {
             case WIN:
-                this.wins++;
+                wins++; // increment instance variable "wins"
                 JOptionPane.showMessageDialog(gui, "You win!");
                 break;
             case LOSS:
-                this.losses++;
+                losses++; // increment instance variable "losses"
                 JOptionPane.showMessageDialog(gui, "Dealer wins!");
                 break;
             case TIE:
-                this.ties++;
+                ties++; // increment instance variable "ties"
                 JOptionPane.showMessageDialog(gui, "It's a tie!");
                 break;
         }
