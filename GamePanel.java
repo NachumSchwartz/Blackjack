@@ -164,7 +164,7 @@ public class GamePanel extends JPanel implements ActionListener{
     }
 
 	//Function to resize Hint image to fit into components
-	public static ImageIcon resizeHintIcon(ImageIcon icon) {
+	private ImageIcon resizeHintIcon(ImageIcon icon) {
 		Image original = icon.getImage();
 		Image resized = original.getScaledInstance(90, 130, java.awt.Image.SCALE_SMOOTH);
 		return new ImageIcon(resized);
