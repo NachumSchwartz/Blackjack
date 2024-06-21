@@ -11,6 +11,7 @@ public class GameFrame extends JFrame{
             setIconImage(new ImageIcon("images/blackjack_icon.png").getImage()); // Set the icon of the frame
             setSize(800, 600); // Set the size of the frame
 			setLocationRelativeTo(null);
+			setBackground(new java.awt.Color(38, 94, 34, 255));
 
             // Create a layered pane
 		    JLayeredPane layeredPane = new JLayeredPane(); // Create a layered pane
