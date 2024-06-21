@@ -1,7 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.Dimension;
-import java.awt.GridBagLayout;
 
 import java.awt.Color;
 
@@ -28,12 +27,9 @@ public class CardFace extends JPanel{
         Border wholeBorder = BorderFactory.createCompoundBorder(compoundOutside, colorBorder); // create compound border
 
         setBorder(wholeBorder); // set border
-        setPreferredSize(new Dimension(200, 300)); // set preferred size
+        setPreferredSize(new Dimension(50, 70)); // set preferred size
         setBackground(Color.white); // set background color
-        setLayout(new GridBagLayout()); // set layout
         
-        Emblem emblem = new Emblem(value, suit, this.color); // create emblem
-    
-        add(emblem); // add emblem
+        add(new JLabel(value));
     }
 }

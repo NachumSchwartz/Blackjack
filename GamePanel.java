@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 
@@ -10,7 +9,6 @@ public class GamePanel extends JPanel implements ActionListener{
 	private InternalGame internal; // Internal game logic
 	private GameStart startGame; // Start game logic
 
-	private List<JLabel> playerCardPanels, dealerCardPanels; // List of player and dealer card panels
 	private JPanel playerPanel, dealerPanel, leaderBoard;
 	private JButton dealButton, hitButton, standButton, hintButton; // Game buttons
 	private JLabel winsLabel, variableWinsLabel, lossesLabel, variableLossesLabel, tiesLabel, variableTiesLabel;
@@ -55,8 +53,6 @@ public class GamePanel extends JPanel implements ActionListener{
 		add(hintButton); // Add button to panel
 
 		// Initialize card panels
-		playerCardPanels = new ArrayList<>(); // Initialize player card panels
-		dealerCardPanels = new ArrayList<>(); // Initialize dealer card panels
 		playerPanel = new JPanel(); // Initialize player panel
 		dealerPanel = new JPanel(); // Initialize dealer panel
 		playerPanel.setLayout(new GridLayout(1, 11)); // Set layout for player panel
@@ -64,16 +60,6 @@ public class GamePanel extends JPanel implements ActionListener{
 
 		playerPanel.setOpaque(false); // Make the panel transparent
 		dealerPanel.setOpaque(false); // Make the panel transparent
-
-		for (int i = 0; i < 11; i++) { // Loop through 11 times
-			JLabel playerCardLabel = new JLabel("", SwingConstants.CENTER); // Initialize player card label
-			playerCardPanels.add(playerCardLabel); // Add player card label to list
-			playerPanel.add(playerCardLabel); // Add player card label to panel
-
-			JLabel dealerCardLabel = new JLabel("", SwingConstants.CENTER); // Initialize dealer card label
-			dealerCardPanels.add(dealerCardLabel); // Add dealer card label to list
-			dealerPanel.add(dealerCardLabel); // Add dealer card label to panel
-		}
 
 		// Set bounds for player and dealer panels to make them flush with each other
 		playerPanel.setBounds(10, 350, 760, 100); // Example position
@@ -118,39 +104,30 @@ public class GamePanel extends JPanel implements ActionListener{
 	}
 
 	private void clearCardPanels() { // Clear card panels
-		// Clear player card panels
-		for (JLabel label : playerCardPanels) { // Loop through player card panels
-			label.setText(""); // Clear text
-		}
-
-		// Clear dealer card panels
-		for (JLabel label : dealerCardPanels) { // Loop through dealer card panels
-			label.setText(""); // Clear text
-		}
+		playerPanel.removeAll();
+		dealerPanel.removeAll();
 	}
 
-	void updateCardPanels() { // Update card panels
+	void updatePlayerPanel() { // Update player card panel
+		playerPanel.removeAll(); //remove cards from panel before repopulating
 		List<Card> playerCards = internal.getPlayerHand().getCards(); // Get player cards
-		for (int i = 0; i < playerCardPanels.size(); i++) { // Loop through player card panels
-			if (i < playerCards.size()) { // If index is less than player cards size
-				playerCardPanels.get(i).setText(playerCards.get(i).toString()); // Set text to card
-			} else { // If index is greater than player cards size
-				playerCardPanels.get(i).setText(""); // Clear text
-			}
+		for (int i = 0; i < playerCards.size(); i++) { // Loop through player cards and create new card faces
+			playerPanel.add(new CardFace(playerCards.get(i).getValue(), playerCards.get(i).getSuit()));
 		}
 
-		List<Card> dealerCards = internal.getDealerHand().getCards(); // Get dealer cards
-		for (int i = 0; i < dealerCardPanels.size(); i++) { // Loop through dealer card panels
-			if (i < dealerCards.size()) { // If index is less than dealer cards size
-				if (i == 0) { // If index is 0
-					dealerCardPanels.get(i).setText(dealerCards.get(i).toString()); // Set text to card
-				} else { // If index is not 0
-					dealerCardPanels.get(i).setText("Hidden"); // Set text to hidden
-				}
-			} else {
-				dealerCardPanels.get(i).setText(""); // Clear text
-			}
+		revalidate();
+		repaint();
+	}
+	void updateDealerPanel() { // Update dealer card panel
+		dealerPanel.removeAll(); //remove cards from panel before repopulating
+
+		List<Card> dealerCards = internal.getDealerHand().getCards(); // Get player cards
+		for (int i = 0; i < dealerCards.size(); i++) { // Loop through player cards and create new card faces
+			dealerPanel.add(new CardFace(dealerCards.get(i).getValue(), dealerCards.get(i).getSuit()));
 		}
+
+		revalidate();
+		repaint();
 	}
 
 	void resetGame() { // Reset game

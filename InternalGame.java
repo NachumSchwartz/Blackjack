@@ -74,7 +74,8 @@ public class InternalGame{
 
         gui.showGameButtons(); //show game buttons
         gui.getDealButton().setEnabled(false);//disable the Deal button after clicked
-        gui.updateCardPanels(); //update card panels
+        gui.updatePlayerPanel(); //update player panel
+        gui.updateDealerPanel(); //update dealer panel
 
         //check for blackjack after first deal
         if(playerHand.calculateHand() == 21){
@@ -88,7 +89,7 @@ public class InternalGame{
 
     void hit() { //method to hit
 		playerHand.receiveCard(deck.drawCard()); //player receives a card
-		gui.updateCardPanels(); //update card panels
+		gui.updatePlayerPanel(); //update card panel
 	
 		if (playerHand.calculateHand() > 21) { //if player's hand > 21 --> player busts --> LOSS
             concludeRound(Outcomes.LOSS);
@@ -107,7 +108,7 @@ public class InternalGame{
 			dealerHand.receiveCard(deck.drawCard()); //dealer receives a card
 		}
 
-		gui.updateCardPanels(); //update card panels
+		gui.updateDealerPanel(); //update card panel
 
         if(dealerHand.calculateHand() > 21 ||
          playerHand.calculateHand() > dealerHand.calculateHand()){
