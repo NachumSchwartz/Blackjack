@@ -34,11 +34,11 @@ public class GamePanel extends JPanel implements ActionListener{
 		// Initialize game buttons
 		hitButton = new JButton("Hit"); // Initialize hit button
 		standButton = new JButton("Stand");  // Initialize stand button
-		hintButton = new JButton("Hint"); // Initialize hint button
+		hintButton = new JButton(resizeHintIcon(new ImageIcon("images/CardHint_Img.png"))); // Initialize hint button
 
 		hitButton.setBounds(300, 500, 80, 30); // Example position
 		standButton.setBounds(400, 500, 80, 30); // Example position
-		hintButton.setBounds(500, 500, 80, 30); // Example position
+		hintButton.setBounds(680, 420, 90, 130); // Example position
 
 		hitButton.setVisible(false); // Hide button
 		standButton.setVisible(false); // Hide button
@@ -162,4 +162,11 @@ public class GamePanel extends JPanel implements ActionListener{
 			internal.hint(); // Hint
 		 }
     }
+
+	//Function to resize Hint image to fit into components
+	public static ImageIcon resizeHintIcon(ImageIcon icon) {
+		Image original = icon.getImage();
+		Image resized = original.getScaledInstance(90, 130, java.awt.Image.SCALE_SMOOTH);
+		return new ImageIcon(resized);
+	}
 }
