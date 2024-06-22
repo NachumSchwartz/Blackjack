@@ -38,7 +38,7 @@ public class GamePanel extends JPanel implements ActionListener{
 
 		hitButton.setBounds(300, 500, 80, 30); // Example position
 		standButton.setBounds(400, 500, 80, 30); // Example position
-		hintButton.setBounds(680, 420, 90, 130); // Example position
+		hintButton.setBounds(710, 450, 70, 110); // Example position
 
 		hitButton.setVisible(false); // Hide button
 		standButton.setVisible(false); // Hide button
@@ -62,8 +62,8 @@ public class GamePanel extends JPanel implements ActionListener{
 		dealerPanel.setOpaque(false); // Make the panel transparent
 
 		// Set bounds for player and dealer panels to make them flush with each other
-		playerPanel.setBounds(10, 350, 760, 100); // Example position
-		dealerPanel.setBounds(10, 200, 760, 100); // Example position
+		playerPanel.setBounds(10, 310, 760, 135); // Example position
+		dealerPanel.setBounds(10, 130, 760, 135); // Example position
 
 		add(playerPanel); // Add player panel to main panel
 		add(dealerPanel); // Add dealer panel to main panel
@@ -71,7 +71,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		//Leaderboard Panel
 		leaderBoard = new JPanel();
 		leaderBoard.setLayout(new GridLayout(3, 2));
-		leaderBoard.setOpaque(false);
+		//leaderBoard.setOpaque(false);
 		leaderBoard.setBounds(700, 10, 100, 100);
 		leaderBoard.setVisible(false);
 
@@ -166,7 +166,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	//Function to resize Hint image to fit into components
 	private ImageIcon resizeHintIcon(ImageIcon icon) {
 		Image original = icon.getImage();
-		Image resized = original.getScaledInstance(90, 130, java.awt.Image.SCALE_SMOOTH);
+		Image resized = original.getScaledInstance(70, 110, java.awt.Image.SCALE_SMOOTH);
 		return new ImageIcon(resized);
 	}
 }

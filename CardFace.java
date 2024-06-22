@@ -1,7 +1,7 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Font;
 
 import java.awt.Color;
 
@@ -10,6 +10,8 @@ public class CardFace extends JPanel{
     private String value; // value of the card
     private String suit; // suit of the card
     private Color color; // color of the card
+
+    private JLabel valueText, cardLabel;
 
     // CardFace constructor
     public CardFace(String value, String suit){
@@ -22,12 +24,6 @@ public class CardFace extends JPanel{
         }else if(suit.equals("Spades")||suit.equals("Clubs")){ // if suit is Spades or Clubs
             this.color = Color.black; // set color to black
         }
-
-        // create borders
-        Border colorBorder = BorderFactory.createMatteBorder(10, 10, 10, 10, this.color); // create matte border
-        Border emptyBorder = BorderFactory.createEmptyBorder(2,2,2,2); // create empty border
-        Border compoundOutside = BorderFactory.createCompoundBorder(colorBorder, emptyBorder); // create compound border
-        Border wholeBorder = BorderFactory.createCompoundBorder(compoundOutside, colorBorder); // create compound border
 
         //set image for suit
         String imagePath = "";
@@ -47,18 +43,33 @@ public class CardFace extends JPanel{
                 break;
         }
 
-        setBorder(wholeBorder); // set border
-        setPreferredSize(new Dimension(50, 70)); // set preferred size
-        setBackground(Color.white); // set background color
+        setLayout(null);
+        //setPreferredSize(new Dimension(50, 70)); // set preferred size
+        setOpaque(false);
         
-        add(new JLabel(value));
-        add(new JLabel(resizeSuitIcon(new ImageIcon(imagePath))));
+        //Customizes Card value text to be displayed
+        valueText = new JLabel(value);
+
+        //If the suit is colored red
+        if(suit.equals("Hearts") || suit.equals("Diamonds")) {
+            valueText.setForeground(new Color(255, 0, 0));
+        }
+
+        valueText.setFont(new Font("Serif", Font.BOLD, 30));
+
+        add(valueText);
+        valueText.setBounds(6, 1, 50, 35);
+
+        //Loads custom card image
+        cardLabel = new JLabel(resizeSuitIcon(new ImageIcon(imagePath)));
+        cardLabel.setBounds(0, 0, 84, 128);
+        add(cardLabel);
     }
 
     //Function to resize Suit image
 	private ImageIcon resizeSuitIcon(ImageIcon icon) {
 		Image original = icon.getImage();
-		Image resized = original.getScaledInstance(84, 124, java.awt.Image.SCALE_SMOOTH);
+		Image resized = original.getScaledInstance(84, 128, java.awt.Image.SCALE_SMOOTH);
 		return new ImageIcon(resized);
 	}
 }
