@@ -13,8 +13,6 @@ public class InternalGame {
     private Hand playerHand; //player's hand
     private Hand dealerHand; //dealer's hand
     private String gameState;
-    private int playerScore;
-    private int dealerScore;
 
     private GamePanel gui; //game panel
     private boolean test;
@@ -24,7 +22,6 @@ public class InternalGame {
         LOSS,
         TIE
     }
-
 
     public InternalGame(GamePanel gui, boolean test) {//constructor - test is true if game is in test mode
         this.wins = 0; //initialize wins
@@ -61,23 +58,9 @@ public class InternalGame {
         return ties; //return ties
     }
 
-/*    public void loadGameState(DatabaseManager.GameState state) {
-        this.playerScore = state.playerScore;
-        this.dealerScore = state.dealerScore;
-        this.playerHand = state.playerHand;
-        this.dealerHand = state.dealerHand;
-        this.gameState = state.gameState;
-        this.wins = state.wins;
-        this.losses = state.losses;
-        this.ties = state.ties;
-    }*/
-
-
-
     Deck getDeck() {
         return deck; //return deck
     }
-
 
     Hand getPlayerHand(){
         return playerHand; //return player's hand
@@ -94,6 +77,14 @@ public class InternalGame {
         return dealerHand.toString(); // Assuming Hand class has a proper toString method
     }*/
 
+    int getPlayerScore() {
+        return playerHand.calculateHand();
+    }
+
+    int getDealerScore() {
+        return dealerHand.calculateHand();
+    }
+
     public String getGameState() {
         return gameState;
     }
@@ -108,13 +99,16 @@ public class InternalGame {
         this.gameState = dateFormat.format(new Date());
     }
 
-    int getPlayerScore() {
-        return playerHand.calculateHand();
-    }
-
-    int getDealerScore() {
-        return dealerHand.calculateHand();
-    }
+    /*public void loadGameState(DatabaseManager.GameState state) {
+        this.playerScore = state.playerScore;
+        this.dealerScore = state.dealerScore;
+        this.playerHand = state.playerHand;
+        this.dealerHand = state.dealerHand;
+        this.gameState = state.gameState;
+        this.wins = state.wins;
+        this.losses = state.losses;
+        this.ties = state.ties;
+    }*/
 
     /*public void restoreGameState(GameState state) {
         this.playerScore = state.getPlayerScore();
@@ -126,8 +120,6 @@ public class InternalGame {
         this.losses = state.getLosses();
         this.ties = state.getTies();
     }*/
-
-
 
     //game methods
     void deal() {
@@ -146,8 +138,7 @@ public class InternalGame {
 
         gui.showGameButtons(); //show game buttons
         gui.getDealButton().setEnabled(false);//disable the Deal button after clicked
-        gui.updatePlayerPanel(); //update player panel
-        gui.updateDealerPanel(); //update dealer panel
+        gui.updatePanelsDeal(); //update cards panels on GUI
 
         //check for blackjack after first deal
         if (playerHand.calculateHand() == 21) {
@@ -161,7 +152,7 @@ public class InternalGame {
 
     void hit() { //method to hit
         playerHand.receiveCard(deck.drawCard()); //player receives a card
-        gui.updatePlayerPanel(); //update card panel
+        gui.updatePlayerPanelHit(); //update card panel
 
         if (playerHand.calculateHand() > 21) { //if player's hand > 21 --> player busts --> LOSS
             concludeRound(Outcomes.LOSS);
@@ -179,8 +170,6 @@ public class InternalGame {
         while (dealerHand.calculateHand() < 17) { //while dealer's hand is less than 17
             dealerHand.receiveCard(deck.drawCard()); //dealer receives a card
         }
-
-        gui.updateDealerPanel(); //update card panel
 
         if (dealerHand.calculateHand() > 21 ||
                 playerHand.calculateHand() > dealerHand.calculateHand()) {
@@ -202,6 +191,8 @@ public class InternalGame {
     }
 
     private void concludeRound(Outcomes outcome) { //method to update stats, display message and reset GUI
+        gui.updateDealersCardPanel(); //update dealer's card panel
+
         switch (outcome) {
             case WIN:
                 wins++; // increment instance variable "wins"

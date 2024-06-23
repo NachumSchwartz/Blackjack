@@ -62,6 +62,10 @@ public class Hand {
         return cards; // return the cards in the hand
     }
 
+    Card getLastCard(){
+        return cards.get(cards.size() - 1);
+    }
+
     int getAceCount(){ // get the number of aces in the hand
         return aceCount; // return the number of aces in the hand
     }

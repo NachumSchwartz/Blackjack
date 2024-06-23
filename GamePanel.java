@@ -122,34 +122,45 @@ public class GamePanel extends JPanel implements ActionListener{
 		dealerScoreLabel.setVisible(true);
 	}
 
-	private void clearCardPanels() { // Clear card panels
-		playerPanel.removeAll();
-		dealerPanel.removeAll();
+	JButton getDealButton(){ // Get deal button
+		return dealButton; // Return deal button
 	}
 
-	void updatePlayerPanel() { // Update player card panel
-		playerPanel.removeAll(); //remove cards from panel before repopulating
+	void updatePanelsDeal() { // Update card panels after deal
 		List<Card> playerCards = internal.getPlayerHand().getCards(); // Get player cards
-		for (int i = 0; i < playerCards.size(); i++) { // Loop through player cards and create new card faces
-			playerPanel.add(new CardFace(playerCards.get(i).getValue(), playerCards.get(i).getSuit()));
-		}
+		List<Card> dealerCards = internal.getDealerHand().getCards(); // Get player cards
+
+		playerPanel.add(new CardFace(playerCards.get(0).getValue(), playerCards.get(0).getSuit()));
+		playerPanel.add(new CardFace(playerCards.get(1).getValue(), playerCards.get(1).getSuit()));
+
+		dealerPanel.add(new CardFace(dealerCards.get(0).getValue(), dealerCards.get(0).getSuit()));
+		dealerPanel.add(new CardFace(dealerCards.get(1).getValue(), "Hidden"));
+		
+		playerScoreLabel.setText("Your Score: " + internal.getPlayerScore());
+
+		revalidate();
+		repaint();
+	}
+
+	void updatePlayerPanelHit(){ // Update player card panel after hit
+		Card newCard = internal.getPlayerHand().getLastCard();
+		playerPanel.add(new CardFace(newCard.getValue(), newCard.getSuit()));
 
 		playerScoreLabel.setText("Your Score: " + internal.getPlayerScore());
 
 		revalidate();
 		repaint();
 	}
-	void updateDealerPanel() { // Update dealer card panel
+
+	void updateDealersCardPanel() { // Update dealer card panel after stand
 		dealerPanel.removeAll(); //remove cards from panel before repopulating
 
 		List<Card> dealerCards = internal.getDealerHand().getCards(); // Get player cards
 		for (int i = 0; i < dealerCards.size(); i++) { // Loop through player cards and create new card faces
-			if(i == 0) {
-				dealerPanel.add(new CardFace(dealerCards.get(i).getValue(), dealerCards.get(i).getSuit()));
-			} else {
-				dealerPanel.add(new CardFace(dealerCards.get(i).getValue(), "Hidden"));
-			}
+			dealerPanel.add(new CardFace(dealerCards.get(i).getValue(), dealerCards.get(i).getSuit()));
 		}
+
+		dealerScoreLabel.setText("Dealer Score: " + internal.getDealerScore());
 
 		revalidate();
 		repaint();
@@ -163,11 +174,11 @@ public class GamePanel extends JPanel implements ActionListener{
 		
 		clearCardPanels(); // Clear card panels
 
-		//Reset Game scores
+		//Reset Game score labels
 		playerScoreLabel.setText("Your Score: 0");
 		playerScoreLabel.setVisible(false);
 
-		dealerScoreLabel.setText("Dealer's Score: 0");
+		dealerScoreLabel.setText("Dealer's Score: ???");
 		dealerScoreLabel.setVisible(false);
 
 		// update leaderboard
@@ -176,11 +187,12 @@ public class GamePanel extends JPanel implements ActionListener{
 		variableTiesLabel.setText(Integer.toString(internal.getTies()));
 	}
 
-	JButton getDealButton(){ // Get deal button
-		return dealButton; // Return deal button
+	private void clearCardPanels() { // Clear card panels
+		playerPanel.removeAll();
+		dealerPanel.removeAll();
 	}
 
-	public void actionPerformed(ActionEvent e){  // Action listener
+	public void actionPerformed(ActionEvent e){  // Action listener for all GUI components
          if(e.getSource() == menu){ // If menu is selected
 			String choice = (String) menu.getSelectedItem(); //	Get selected item
 			startGame.choiceSwitch(choice); // Switch to selected item

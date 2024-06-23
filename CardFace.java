@@ -1,30 +1,17 @@
 import javax.swing.*;
-import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Font;
-
 import java.awt.Color;
 
 // CardFace class
 public class CardFace extends JPanel{
-    private String value; // value of the card
-    private String suit; // suit of the card
-    private Color color; // color of the card
-
     private JLabel valueText, cardLabel;
 
     // CardFace constructor
     public CardFace(String value, String suit){
-        this.value = value; // set value
-        this.suit = suit; // set suit
-
-        //set color for border
-        if(suit.equals("Hearts")||suit.equals("Diamonds")){ // if suit is Hearts or Diamonds
-            this.color = Color.red; // set color to red
-        }else if(suit.equals("Spades")||suit.equals("Clubs")){ // if suit is Spades or Clubs
-            this.color = Color.black; // set color to black
-        }
-
+        setLayout(null);
+        setOpaque(false);
+        
         //set image for suit
         String imagePath = "";
 
@@ -46,15 +33,11 @@ public class CardFace extends JPanel{
                 break;
         }
 
-        setLayout(null);
-        //setPreferredSize(new Dimension(50, 70)); // set preferred size
-        setOpaque(false);
-        
-        //Customizes Card value text to be displayed
-        if(!suit.equalsIgnoreCase("Hidden")) {
+        //Customizes Card value text to be displayed (if cardface is not hidden)
+        if(!suit.equals("Hidden")) {
             valueText = new JLabel(value);
 
-            //If the suit is colored red
+            //If the suit is colored red, change color from default of black to red
             if(suit.equals("Hearts") || suit.equals("Diamonds")) {
                 valueText.setForeground(new Color(255, 0, 0));
             }
