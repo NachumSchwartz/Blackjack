@@ -57,6 +57,14 @@ public class InternalGame{
         return dealerHand; //return dealer's hand
     }
 
+    int getPlayerScore() {
+        return playerHand.calculateHand();
+    }
+
+    int getDealerScore() {
+        return dealerHand.calculateHand();
+    }
+
     //game methods
     void deal(){
         //if current deck is too small, create a new deck

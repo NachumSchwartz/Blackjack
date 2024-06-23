@@ -11,7 +11,8 @@ public class GamePanel extends JPanel implements ActionListener{
 
 	private JPanel playerPanel, dealerPanel, leaderBoard;
 	private JButton dealButton, hitButton, standButton, hintButton; // Game buttons
-	private JLabel winsLabel, variableWinsLabel, lossesLabel, variableLossesLabel, tiesLabel, variableTiesLabel;
+	private JLabel winsLabel, variableWinsLabel, lossesLabel, variableLossesLabel, tiesLabel, variableTiesLabel,
+	playerScoreLabel, dealerScoreLabel;
 	private Menu menu; // Menu object
 
 	public GamePanel(boolean test){//test is true if game is in test mode
@@ -36,8 +37,8 @@ public class GamePanel extends JPanel implements ActionListener{
 		standButton = new JButton("Stand");  // Initialize stand button
 		hintButton = new JButton(resizeHintIcon(new ImageIcon("images/CardHint_Img.png"))); // Initialize hint button
 
-		hitButton.setBounds(300, 500, 80, 30); // Example position
-		standButton.setBounds(400, 500, 80, 30); // Example position
+		hitButton.setBounds(300, 500, 80, 60); // Example position
+		standButton.setBounds(400, 500, 80, 60); // Example position
 		hintButton.setBounds(710, 450, 70, 110); // Example position
 
 		hitButton.setVisible(false); // Hide button
@@ -51,6 +52,21 @@ public class GamePanel extends JPanel implements ActionListener{
 		add(hitButton); // Add button to panel
 		add(standButton); // Add button to panel
 		add(hintButton); // Add button to panel
+
+		//Adds and customizes player and dealer score texts
+		playerScoreLabel = new JLabel("Your Score: 0");
+		playerScoreLabel.setBounds(340, 445, 120, 40);
+		playerScoreLabel.setOpaque(true);
+
+		dealerScoreLabel = new JLabel("Dealer's Score: ???");
+		dealerScoreLabel.setBounds(340, 85, 120, 40);
+		dealerScoreLabel.setOpaque(true);
+
+		add(playerScoreLabel);
+		add(dealerScoreLabel);
+
+		playerScoreLabel.setVisible(false);
+		dealerScoreLabel.setVisible(false);
 
 		// Initialize card panels
 		playerPanel = new JPanel(); // Initialize player panel
@@ -71,8 +87,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		//Leaderboard Panel
 		leaderBoard = new JPanel();
 		leaderBoard.setLayout(new GridLayout(3, 2));
-		//leaderBoard.setOpaque(false);
-		leaderBoard.setBounds(700, 10, 100, 100);
+		leaderBoard.setBounds(670, 10, 100, 100);
 		leaderBoard.setVisible(false);
 
 		winsLabel = new JLabel("Wins: ");
@@ -101,6 +116,10 @@ public class GamePanel extends JPanel implements ActionListener{
 		hitButton.setVisible(true); // Show button
 		standButton.setVisible(true); // Show button
 		hintButton.setVisible(true); // Show button
+
+		//Display scores
+		playerScoreLabel.setVisible(true);
+		dealerScoreLabel.setVisible(true);
 	}
 
 	private void clearCardPanels() { // Clear card panels
@@ -115,6 +134,8 @@ public class GamePanel extends JPanel implements ActionListener{
 			playerPanel.add(new CardFace(playerCards.get(i).getValue(), playerCards.get(i).getSuit()));
 		}
 
+		playerScoreLabel.setText("Your Score: " + internal.getPlayerScore());
+
 		revalidate();
 		repaint();
 	}
@@ -125,6 +146,8 @@ public class GamePanel extends JPanel implements ActionListener{
 		for (int i = 0; i < dealerCards.size(); i++) { // Loop through player cards and create new card faces
 			dealerPanel.add(new CardFace(dealerCards.get(i).getValue(), dealerCards.get(i).getSuit()));
 		}
+
+		dealerScoreLabel.setText("Dealer's Score: " + internal.getDealerScore());
 
 		revalidate();
 		repaint();
@@ -137,6 +160,13 @@ public class GamePanel extends JPanel implements ActionListener{
 		dealButton.setEnabled(true); // Re-enable the Deal button for new round
 		
 		clearCardPanels(); // Clear card panels
+
+		//Reset Game scores
+		playerScoreLabel.setText("Your Score: 0");
+		playerScoreLabel.setVisible(false);
+
+		dealerScoreLabel.setText("Dealer's Score: 0");
+		dealerScoreLabel.setVisible(false);
 
 		// update leaderboard
 		variableWinsLabel.setText(Integer.toString(internal.getWins()));
