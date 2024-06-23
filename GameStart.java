@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 // Purpose: This class is used to start the game and switch between the different options in the menu.
 public class GameStart {
     InternalGame internalGame; //InternalGame object
@@ -35,9 +37,35 @@ public class GameStart {
     }
     private void saveGame(){ //method to save a game
         System.out.println("Save Game");
+        DatabaseManager.initializeDatabase();
+        // Set the current game state with timestamp
+        internalGame.updateGameStateWithTimestamp();
+
+        // Get the current game state from internalGame
+        int playerScore = internalGame.getPlayerScore();
+        int dealerScore = internalGame.getDealerScore();
+        String playerHand = String.valueOf(internalGame.getPlayerHand());
+        String dealerHand = String.valueOf(internalGame.getDealerHand());
+        String gameState = internalGame.getGameState();
+        int wins = internalGame.getWins();
+        int losses = internalGame.getLosses();
+        int ties = internalGame.getTies();
+
+
+        // Save the game state using DatabaseManager
+        //DatabaseManager.initializeDatabase();
+        //DatabaseManager.saveGameState(playerScore, dealerScore, playerHand, dealerHand, gameState);
+        DatabaseManager.saveGameState(playerScore, dealerScore, playerHand, dealerHand, gameState, wins, losses, ties);
+
+        JOptionPane.showMessageDialog(null, "Game state saved successfully!");
+        //DatabaseManager.connect();
+        //DatabaseManager.createTable();
+        //DatabaseManager.saveGameState(internalGame.getDeck().toString(), internalGame.getWins(), internalGame.getLosses(), internalGame.getTies());
+
     }
     private void tutorial(){ //method to display the tutorial
         System.out.println("Tutorial");
+
     }
 
 }
