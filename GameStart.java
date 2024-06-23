@@ -51,7 +51,6 @@ public class GameStart {
         int losses = internalGame.getLosses();
         int ties = internalGame.getTies();
 
-
         // Save the game state using DatabaseManager
         //DatabaseManager.initializeDatabase();
         //DatabaseManager.saveGameState(playerScore, dealerScore, playerHand, dealerHand, gameState);
