@@ -74,7 +74,7 @@ public class Hand {
     public String toString(){
         String handValues = ""; // the values of the cards in the hand
         for(Card card : cards){ // for each card in the hand
-            handValues += card.getValue() + ","; // add the value of the card to the handValues string
+            handValues += card.toString() + ","; // add the value of the card to the handValues string
         }
         return handValues; // return the values of the cards in the hand
     }

@@ -69,14 +69,6 @@ public class InternalGame {
         return dealerHand; //return dealer's hand
     }
 
-/*    public String getPlayerHand() {
-        return playerHand.toString(); // Assuming Hand class has a proper toString method
-    }
-
-    public String getDealerHand() {
-        return dealerHand.toString(); // Assuming Hand class has a proper toString method
-    }*/
-
     int getPlayerScore() {
         return playerHand.calculateHand();
     }
@@ -84,42 +76,6 @@ public class InternalGame {
     int getDealerScore() {
         return dealerHand.calculateHand();
     }
-
-    public String getGameState() {
-        return gameState;
-    }
-
-    public void setGameState(String gameState) {
-        this.gameState = gameState;
-    }
-
-    public void updateGameStateWithTimestamp() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMMyyyy: HH:mm:ss'Z'", Locale.ENGLISH);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        this.gameState = dateFormat.format(new Date());
-    }
-
-    /*public void loadGameState(DatabaseManager.GameState state) {
-        this.playerScore = state.playerScore;
-        this.dealerScore = state.dealerScore;
-        this.playerHand = state.playerHand;
-        this.dealerHand = state.dealerHand;
-        this.gameState = state.gameState;
-        this.wins = state.wins;
-        this.losses = state.losses;
-        this.ties = state.ties;
-    }*/
-
-    /*public void restoreGameState(GameState state) {
-        this.playerScore = state.getPlayerScore();
-        this.dealerScore = state.getDealerScore();
-        this.playerHand = new Hand(state.getPlayerHand()); // Assuming Hand has a constructor that takes a String
-        this.dealerHand = new Hand(state.getDealerHand()); // Assuming Hand has a constructor that takes a String
-        this.gameState = state.getGameState();
-        this.wins = state.getWins();
-        this.losses = state.getLosses();
-        this.ties = state.getTies();
-    }*/
 
     //game methods
     void deal() {
@@ -210,4 +166,41 @@ public class InternalGame {
 
         gui.resetGame(); //reset GUI
     }
+
+        //database methods
+        public String getGameState() {
+            return gameState;
+        }
+    
+        public void setGameState(String gameState) {
+            this.gameState = gameState;
+        }
+    
+        public void updateGameStateWithTimestamp() {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMMyyyy: HH:mm:ss'Z'", Locale.ENGLISH);
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            this.gameState = dateFormat.format(new Date());
+        }
+    
+        /*public void loadGameState(DatabaseManager.GameState state) {
+            this.playerScore = state.playerScore;
+            this.dealerScore = state.dealerScore;
+            this.playerHand = state.playerHand;
+            this.dealerHand = state.dealerHand;
+            this.gameState = state.gameState;
+            this.wins = state.wins;
+            this.losses = state.losses;
+            this.ties = state.ties;
+        }*/
+    
+        /*public void restoreGameState(GameState state) {
+            this.playerScore = state.getPlayerScore();
+            this.dealerScore = state.getDealerScore();
+            this.playerHand = new Hand(state.getPlayerHand()); // Assuming Hand has a constructor that takes a String
+            this.dealerHand = new Hand(state.getDealerHand()); // Assuming Hand has a constructor that takes a String
+            this.gameState = state.getGameState();
+            this.wins = state.getWins();
+            this.losses = state.getLosses();
+            this.ties = state.getTies();
+        }*/
 }
