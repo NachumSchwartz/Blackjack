@@ -41,6 +41,9 @@ public class CardFace extends JPanel{
             case "Clubs":
                 imagePath = "images/CardClub_Img.png";
                 break;
+            case "Hidden":
+                imagePath = "images/CardBack_Img.png";
+                break;
         }
 
         setLayout(null);
@@ -48,17 +51,19 @@ public class CardFace extends JPanel{
         setOpaque(false);
         
         //Customizes Card value text to be displayed
-        valueText = new JLabel(value);
+        if(!suit.equalsIgnoreCase("Hidden")) {
+            valueText = new JLabel(value);
 
-        //If the suit is colored red
-        if(suit.equals("Hearts") || suit.equals("Diamonds")) {
-            valueText.setForeground(new Color(255, 0, 0));
+            //If the suit is colored red
+            if(suit.equals("Hearts") || suit.equals("Diamonds")) {
+                valueText.setForeground(new Color(255, 0, 0));
+            }
+
+            valueText.setFont(new Font("Serif", Font.BOLD, 30));
+
+            add(valueText);
+            valueText.setBounds(6, 1, 50, 35);
         }
-
-        valueText.setFont(new Font("Serif", Font.BOLD, 30));
-
-        add(valueText);
-        valueText.setBounds(6, 1, 50, 35);
 
         //Loads custom card image
         cardLabel = new JLabel(resizeSuitIcon(new ImageIcon(imagePath)));

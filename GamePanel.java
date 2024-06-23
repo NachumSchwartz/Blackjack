@@ -144,10 +144,12 @@ public class GamePanel extends JPanel implements ActionListener{
 
 		List<Card> dealerCards = internal.getDealerHand().getCards(); // Get player cards
 		for (int i = 0; i < dealerCards.size(); i++) { // Loop through player cards and create new card faces
-			dealerPanel.add(new CardFace(dealerCards.get(i).getValue(), dealerCards.get(i).getSuit()));
+			if(i == 0) {
+				dealerPanel.add(new CardFace(dealerCards.get(i).getValue(), dealerCards.get(i).getSuit()));
+			} else {
+				dealerPanel.add(new CardFace(dealerCards.get(i).getValue(), "Hidden"));
+			}
 		}
-
-		dealerScoreLabel.setText("Dealer's Score: " + internal.getDealerScore());
 
 		revalidate();
 		repaint();
