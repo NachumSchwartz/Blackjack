@@ -2,8 +2,8 @@ import javax.swing.*;
 
 // Purpose: This class is used to start the game and switch between the different options in the menu.
 public class GameStart {
-    InternalGame internalGame; //InternalGame object
-    GamePanel gui; //GamePanel object
+    private InternalGame internalGame; //InternalGame object
+    private GamePanel gui; //GamePanel object
 
     public GameStart(InternalGame internalGame, GamePanel gui){ //constructor
         this.internalGame = internalGame; //initialize internalGame
@@ -64,8 +64,6 @@ public class GameStart {
     }
     private void tutorial(){ //method to display the tutorial
         System.out.println("Tutorial");
-
     }
-
 }
  

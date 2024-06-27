@@ -46,15 +46,15 @@ public class InternalGame {
         }
     }
 
-    public int getWins() {
+    int getWins() {
         return wins; //return wins
     }
 
-    public int getLosses() {
+    int getLosses() {
         return losses; //return losses
     }
 
-    public int getTies() {
+    int getTies() {
         return ties; //return ties
     }
 
