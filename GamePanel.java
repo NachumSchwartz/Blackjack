@@ -1,8 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.List;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 // GamePanel class
 public class GamePanel extends JPanel implements ActionListener{

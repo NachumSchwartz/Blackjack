@@ -71,4 +71,9 @@ public class DatabaseManager {
 
         return gameStates;
     }
-}
+
+    public static String[] getGameNames(){
+        String[] names = {"Paul", "Jake", "Eric", "Nachum"};
+        return names;
+    }
+ }
