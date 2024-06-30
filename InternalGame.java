@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 // internal game logic
@@ -13,6 +14,7 @@ public class InternalGame {
     private Hand playerHand; //player's hand
     private Hand dealerHand; //dealer's hand
     private String gameState;
+    private String gameName;
 
     private GamePanel gui; //game panel
     private boolean test;
@@ -180,6 +182,22 @@ public class InternalGame {
         SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMMyyyy: HH:mm:ss'Z'", Locale.ENGLISH);
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         this.gameState = dateFormat.format(new Date());
+    }
+
+    public void loadGameState(Map<String, Object> gameState) {
+        this.wins = (int) gameState.get("wins");
+        this.losses = (int) gameState.get("losses");
+        this.ties = (int) gameState.get("ties");
+        this.gameState = (String) gameState.get("gameState");
+
+        // Assuming Hand has a method to load cards from a string
+        this.playerHand = Hand.fromString((String) gameState.get("playerHand"), test);
+        this.dealerHand = Hand.fromString((String) gameState.get("dealerHand"), test);
+
+        // Update GUI components based on the loaded state
+        gui.updatePanelsDeal();
+        gui.updatePlayerPanelHit();
+        gui.updateDealersCardPanel();
     }
     
 }
