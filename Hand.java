@@ -70,12 +70,38 @@ public class Hand {
         return aceCount; // return the number of aces in the hand
     }
     
-    @Override
+/*    @Override
     public String toString(){
         String handValues = ""; // the values of the cards in the hand
         for(Card card : cards){ // for each card in the hand
             handValues += card.toString() + ","; // add the value of the card to the handValues string
         }
         return handValues; // return the values of the cards in the hand
+    }*/
+
+    @Override
+    public String toString() { // convert hand to string
+        StringBuilder handValues = new StringBuilder(); // the values of the cards in the hand
+        for (Card card : cards) { // for each card in the hand
+            handValues.append(card.getValue()).append("-").append(card.getSuit()).append(","); // add the value and suit of the card to the handValues string
+        }
+        if (handValues.length() > 0) {
+            handValues.setLength(handValues.length() - 1); // remove the last comma
+        }
+        return handValues.toString(); // return the values of the cards in the hand
+    }
+
+    public static Hand fromString(String handString, boolean test) { // create hand from string
+        Hand hand = new Hand(test);
+        if (handString != null && !handString.isEmpty()) {
+            String[] cardStrings = handString.split(",");
+            for (String cardString : cardStrings) {
+                String[] parts = cardString.split("-");
+                if (parts.length == 2) {
+                    hand.receiveCard(new Card(parts[0], parts[1]));
+                }
+            }
+        }
+        return hand;
     }
 }

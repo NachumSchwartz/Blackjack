@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.util.Map;
 
 // Purpose: This class is used to start the game and switch between the different options in the menu.
 public class GameStart {
@@ -32,7 +33,7 @@ public class GameStart {
         gui.setNewGame(); // set up GUI with new game
     }
 
-    private void loadGame(){ //method to load a game
+/*    private void loadGame(){ //method to load a game
         SaveLoadPanel inputPanel = new SaveLoadPanel("load");
         JOptionPane.showMessageDialog(gui,inputPanel,"",JOptionPane.PLAIN_MESSAGE);
         String gameName = inputPanel.getGameName();
@@ -42,7 +43,25 @@ public class GameStart {
 
 
         } 
+    }*/
+
+    private void loadGame() { // Method to load a game
+        SaveLoadPanel inputPanel = new SaveLoadPanel("load");
+        JOptionPane.showMessageDialog(gui, inputPanel, "", JOptionPane.PLAIN_MESSAGE);
+        String gameName = inputPanel.getGameName();
+        if (gameName != null) {
+            Map<String, Object> gameState = DatabaseManager.getGameStateByGameName(gameName);
+            if (!gameState.isEmpty()) {
+                internalGame.loadGameState(gameState);
+                gui.updateFromLoadedGame(internalGame);
+                JOptionPane.showMessageDialog(gui, "Game loaded successfully!");
+            } else {
+                JOptionPane.showMessageDialog(gui, "No saved game found with the name: " + gameName);
+            }
+        }
     }
+
+
     private void saveGame(){ //method to save a game
         SaveLoadPanel inputPanel = new SaveLoadPanel("save");
         JOptionPane.showMessageDialog(gui,inputPanel,"",JOptionPane.PLAIN_MESSAGE);
@@ -65,7 +84,7 @@ public class GameStart {
             int losses = internalGame.getLosses();
             int ties = internalGame.getTies();
 
-            DatabaseManager.saveGameState(playerScore, dealerScore, playerHand, dealerHand, gameState, wins, losses, ties);
+            DatabaseManager.saveGameState(gameName, playerScore, dealerScore, playerHand, dealerHand, gameState, wins, losses, ties);
 
             JOptionPane.showMessageDialog(null, "Game state saved successfully!");
         }

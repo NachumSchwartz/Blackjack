@@ -213,4 +213,35 @@ public class GamePanel extends JPanel implements ActionListener{
 		Image resized = original.getScaledInstance(70, 110, java.awt.Image.SCALE_SMOOTH);
 		return new ImageIcon(resized);
 	}
+
+	public void updateFromLoadedGame(InternalGame internal) {
+		// Clear current panels
+		clearCardPanels();
+
+		// Update panels with loaded cards
+		List<Card> playerCards = internal.getPlayerHand().getCards();
+		List<Card> dealerCards = internal.getDealerHand().getCards();
+
+		for (Card card : playerCards) {
+			playerPanel.add(new CardFace(card.getValue(), card.getSuit()));
+		}
+
+		for (Card card : dealerCards) {
+			dealerPanel.add(new CardFace(card.getValue(), card.getSuit()));
+		}
+
+		// Update scores
+		playerScoreLabel.setText("Your Score: " + internal.getPlayerScore());
+		dealerScoreLabel.setText("Dealer's Score: " + internal.getDealerScore());
+
+		// Show scores and buttons
+		playerScoreLabel.setVisible(true);
+		dealerScoreLabel.setVisible(true);
+		hitButton.setVisible(true);
+		standButton.setVisible(true);
+		hintButton.setVisible(true);
+
+		revalidate();
+		repaint();
+	}
 }
