@@ -191,7 +191,7 @@ public class InternalGame {
 
         clearHands();
         appState = AppStates.AFTER_ROUND;
-        gui.resetGui(); //reset GUI
+        gui.resetGUI(); //reset GUI
     }
 
     private void clearHands(){

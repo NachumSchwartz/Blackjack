@@ -118,11 +118,11 @@ public class GamePanel extends JPanel implements ActionListener{
 		}else if(appState == InternalGame.AppStates.BRAND_NEW_GAME){//if old game is brand new
 			return; //no change necessary to gui
 		}else{//if old game was in progress
-			resetGui();
+			resetGUI();
 		}
 	}
 
-	void resetGui() { // Reset gui to prepare for new round. Update leaderboard.
+	void resetGUI() { // Reset gui to prepare for new round. Update leaderboard.
 
 		//make game play button invisible
 		hitButton.setVisible(false); 
