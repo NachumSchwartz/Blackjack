@@ -12,6 +12,19 @@ public class Hand {
         this.test = test;
     }
 
+    //constructor using String representation of cards
+    public Hand(String handString){ 
+        cards = new ArrayList<Card>();
+
+        String[] cardStrings = handString.split(",");
+        for (String cardString : cardStrings) {
+            String[] parts = cardString.split("-");
+            if (parts.length == 2) {
+                receiveCard(new Card(parts[0], parts[1]));
+            }
+        }
+    }
+
     void receiveCard(Card card){ 
         cards.add(card);
 
@@ -69,10 +82,6 @@ public class Hand {
         return cards; // return the cards in the hand
     }
 
-    Card getLastCard(){
-        return cards.get(cards.size() - 1);
-    }
-
     int getAceCount(){ // get the number of aces in the hand
         return aceCount; // return the number of aces in the hand
     }
@@ -88,19 +97,5 @@ public class Hand {
         }
         
         return handValues.toString(); // return the values of the cards in the hand
-    }
-
-    public static Hand fromString(String handString, boolean test) { // create hand from string
-        Hand hand = new Hand(test);
-        if (handString != null && !handString.isEmpty()) {
-            String[] cardStrings = handString.split(",");
-            for (String cardString : cardStrings) {
-                String[] parts = cardString.split("-");
-                if (parts.length == 2) {
-                    hand.receiveCard(new Card(parts[0], parts[1]));
-                }
-            }
-        }
-        return hand;
     }
 }

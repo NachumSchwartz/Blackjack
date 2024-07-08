@@ -79,8 +79,8 @@ public class GamePanel extends JPanel implements ActionListener{
 		dealerPanel.setOpaque(false); 
 
 		// Set bounds for player and dealer panels to make them flush with each other
-		playerPanel.setBounds(10, 310, 760, 135); 
-		dealerPanel.setBounds(10, 130, 760, 135); 
+		playerPanel.setBounds(200, 310, 400, 135); 
+		dealerPanel.setBounds(200, 130, 400, 135); 
 
 		add(playerPanel); 
 		add(dealerPanel); 
@@ -122,6 +122,39 @@ public class GamePanel extends JPanel implements ActionListener{
 		}
 	}
 
+	void resetGui() { // Reset gui to prepare for new round. Update leaderboard.
+
+		//make game play button invisible
+		hitButton.setVisible(false); 
+		standButton.setVisible(false); 
+		hintButton.setVisible(false); 
+
+		dealButton.setEnabled(true); // Re-enable the Deal button for new round
+		
+		clearCardPanels(); // Clear card panels
+
+		//Reset Game score labels
+		playerScoreLabel.setText("Your Score: 0");
+		playerScoreLabel.setVisible(false);
+
+		dealerScoreLabel.setText("Dealer's Score: ???");
+		dealerScoreLabel.setVisible(false);
+
+		updateLeaderboard();
+
+	}
+
+	void updateLeaderboard(){
+		variableWinsLabel.setText(Integer.toString(internal.getWins()));
+		variableLossesLabel.setText(Integer.toString(internal.getLosses()));
+		variableTiesLabel.setText(Integer.toString(internal.getTies()));
+	}
+
+	private void clearCardPanels() { // Clear card panels
+		playerPanel.removeAll();
+		dealerPanel.removeAll();
+	}
+
 	//method to update gui after dealing cards
 	void updateGUIafterDeal() {
 		dealButton.setEnabled(false);
@@ -136,6 +169,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		
 		updateCardPanelAfterDeal();
 	}
+
 	private void updateCardPanelAfterDeal() { //private method for cards panels
 		//gui reflects list of Card in InternalGame instance
 		List<Card> dealerCards = internal.getDealerHand().getCards();
@@ -157,7 +191,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	void updatePlayersCardPanel(){
 		updateCardPanel(playerPanel, internal.getPlayerHand(), playerScoreLabel);
 	}
-	private void updateCardPanel(JPanel cardPanel, Hand hand, JLabel scoreLabel) { // Update gui after stand
+	private void updateCardPanel(JPanel cardPanel, Hand hand, JLabel scoreLabel){
 		cardPanel.removeAll(); //remove cards from panel before repopulating
 
 		List<Card> cards = hand.getCards();
@@ -176,34 +210,6 @@ public class GamePanel extends JPanel implements ActionListener{
 		repaint();
 	}
 
-	void resetGui() { // Reset gui to prepare for new round. Update leaderboard.
-
-		//make game play button invisible
-		hitButton.setVisible(false); 
-		standButton.setVisible(false); 
-		hintButton.setVisible(false); 
-
-		dealButton.setEnabled(true); // Re-enable the Deal button for new round
-		
-		clearCardPanels(); // Clear card panels
-
-		//Reset Game score labels
-		playerScoreLabel.setText("Your Score: 0");
-		playerScoreLabel.setVisible(false);
-
-		dealerScoreLabel.setText("Dealer's Score: ???");
-		dealerScoreLabel.setVisible(false);
-
-		// update leaderboard
-		variableWinsLabel.setText(Integer.toString(internal.getWins()));
-		variableLossesLabel.setText(Integer.toString(internal.getLosses()));
-		variableTiesLabel.setText(Integer.toString(internal.getTies()));
-	}
-
-	private void clearCardPanels() { // Clear card panels
-		playerPanel.removeAll();
-		dealerPanel.removeAll();
-	}
 
 	public void actionPerformed(ActionEvent e){  // Action listener for all GUI components
          if(e.getSource() == menu){ 
@@ -225,36 +231,5 @@ public class GamePanel extends JPanel implements ActionListener{
 		Image original = icon.getImage();
 		Image resized = original.getScaledInstance(70, 110, java.awt.Image.SCALE_SMOOTH);
 		return new ImageIcon(resized);
-	}
-
-	public void updateFromLoadedGame(InternalGame internal) {
-		// Clear current panels
-		clearCardPanels();
-
-		// Update panels with loaded cards
-		List<Card> playerCards = internal.getPlayerHand().getCards();
-		List<Card> dealerCards = internal.getDealerHand().getCards();
-
-		for (Card card : playerCards) {
-			playerPanel.add(new CardFace(card.getValue(), card.getSuit()));
-		}
-
-		for (Card card : dealerCards) {
-			dealerPanel.add(new CardFace(card.getValue(), card.getSuit()));
-		}
-
-		// Update scores
-		playerScoreLabel.setText("Your Score: " + internal.getPlayerScore());
-		dealerScoreLabel.setText("Dealer's Score: " + internal.getDealerScore());
-
-		// Show scores and buttons
-		playerScoreLabel.setVisible(true);
-		dealerScoreLabel.setVisible(true);
-		hitButton.setVisible(true);
-		standButton.setVisible(true);
-		hintButton.setVisible(true);
-
-		revalidate();
-		repaint();
 	}
 }

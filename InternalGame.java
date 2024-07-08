@@ -3,9 +3,9 @@ import java.util.Map;
 
 // internal game logic
 public class InternalGame {
-    private final int SMALLEST_GOOD_DECK = 20;
-    private final int BLACKJACK = 21;
-    private final int DEALER_STAND = 17;
+    private static final int SMALLEST_GOOD_DECK = 20;
+    private static final int BLACKJACK = 21;
+    private static final int DEALER_STAND = 17;
 
     static enum AppStates{
         BRAND_NEW_GAME,
@@ -13,6 +13,7 @@ public class InternalGame {
         AFTER_ROUND
     }
 
+    //private instance variables
     private GamePanel gui; 
     private boolean test;
 
@@ -198,20 +199,32 @@ public class InternalGame {
         dealerHand.clearCards();
     } 
 
-    //database method
+    //method to update internal game and gui from loaded game info
     void loadGameState(Map<String, Object> gameState) {
         setDeck();
 
-        this.wins = (int) gameState.get("wins");
-        this.losses = (int) gameState.get("losses");
-        this.ties = (int) gameState.get("ties");
+        wins = (int) gameState.get("wins");
+        losses = (int) gameState.get("losses");
+        ties = (int) gameState.get("ties");
 
         String playerHandString = (String) gameState.get("playerHand");
         String dealerHandString = (String) gameState.get("dealerHand");
 
-        if(!playerHandString.equals("empty")){
-            this.playerHand = Hand.fromString(playerHandString, test);
-            this.dealerHand = Hand.fromString(dealerHandString, test);
+        if(playerHandString.equals("empty")){
+            playerHand = new Hand(test);
+            dealerHand = new Hand(test);
+        }else{
+            playerHand =  new Hand(playerHandString);
+            dealerHand = new Hand(dealerHandString);
+        }
+
+        if(playerHand.getCards().size() == 0){ //if there are no cards in the hands
+            gui.setNewGame(appState); //appState contains old state of app - before the load
+            appState = AppStates.AFTER_ROUND; //(it is not possible to save a BRAND_NEW_GAME)
+        }else{ //if there are cards in hands
+            gui.updateGUIafterDeal();
+            gui.updateLeaderboard();
+            appState = AppStates.MID_ROUND; //(it is not possible to save a game end round before clear)
         }
     }
 }

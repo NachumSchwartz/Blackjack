@@ -44,9 +44,9 @@ public class GameStart {
         }
  
         //set a new game for internal engine and gui
-        InternalGame.AppStates oldAppState = internalGame.getAppState();
+        InternalGame.AppStates oldAppState = internalGame.getAppState(); //record the old state before resetting
         internalGame.setNewGame(); //resets game stats
-        gui.setNewGame(oldAppState); //full reset if game in progress - if not then elements made visible
+        gui.setNewGame(oldAppState); //full reset if game was in progress - if not then elements made visible
     }
 
     private void loadGame() { // Method to load a game
@@ -55,16 +55,15 @@ public class GameStart {
         String gameName = inputPanel.getGameName();
         if (gameName != null) {
             Map<String, Object> gameState = DatabaseManager.getGameStateByGameName(gameName);
-            if (!gameState.isEmpty()) {
+            if (!gameState.isEmpty()) {//check that there is a game with such a name
                 internalGame.loadGameState(gameState);
-                gui.updateFromLoadedGame(internalGame);
                 JOptionPane.showMessageDialog(gui, "Game loaded successfully!");
             } else {
                 JOptionPane.showMessageDialog(gui, "No saved game found with the name: " + gameName);
             }
         }
     }
-
+    
     private void saveGame(){ //method to save a game
         //only save if game has begun
         if(internalGame.getAppState() == InternalGame.AppStates.BRAND_NEW_GAME ||
@@ -85,6 +84,7 @@ public class GameStart {
             String playerHand = String.valueOf(internalGame.getPlayerHand());
             String dealerHand = String.valueOf(internalGame.getDealerHand());
 
+            //if there are no cards in hands, set String as "empty"
             if(playerHand.equals("")){
                 playerHand = "empty";
                 dealerHand = "empty";
