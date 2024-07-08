@@ -2,7 +2,7 @@ import javax.swing.JComboBox;
 
 // class that creates the menu
 public class Menu extends JComboBox<String>{
-	private static String menuOptions[] = {"New Game", "Load Game", "Save Game", "Tutorial"}; // menu options
+	private static String menuOptions[] = {"New Game", "Load Game", "Save Game", "Tutorial"};
 
     public Menu(){ // constructor
         super(menuOptions); // call super constructor

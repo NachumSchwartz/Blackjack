@@ -4,20 +4,20 @@ public class Card {
     private String suit; // the suit of the card
 
     public Card(String value, String suit) { // constructor
-        this.value = value; // set the value of the card
-        this.suit = suit; // set the suit of the card
+        this.value = value;
+        this.suit = suit; 
     }
 
-    public String getValue() { // get the value of the card
-        return value; // return the value of the card
+    String getValue() { 
+        return value;
     }
 
-    public String getSuit() { // get the suit of the card
-        return suit; // return the suit of the card
+    String getSuit() {
+        return suit; 
     }
 
     @Override
-    public String toString() { // override the toString method
-        return value; // return the value of the card
+    public String toString() { 
+        return value;
     }
 }

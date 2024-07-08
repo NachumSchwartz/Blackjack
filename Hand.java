@@ -8,12 +8,12 @@ public class Hand {
     private boolean test; // "test" is true if game is in test mode
 
     public Hand(boolean test){// constructor
-        cards = new ArrayList<Card>(); // create a new ArrayList
+        cards = new ArrayList<Card>();
         this.test = test;
     }
 
-    void receiveCard(Card card){ // receive a card
-        cards.add(card); // add the card to the hand
+    void receiveCard(Card card){ 
+        cards.add(card);
 
         //if an Ace is received, increment Hand's aceCount
         if(card.getValue().equals("A")){
@@ -22,20 +22,21 @@ public class Hand {
     }
 
     int calculateHand() { // calculate the value of the hand
-        int total = 0; // the total value of the hand
-        for (Card card : cards) { // for each card in the hand
-            int cardValue; // the value of the card
-            switch (card.getValue()) { // switch on the value of the card
-                case "J": // if the card is a Jack
-                case "Q": // if the card is a Queen
-                case "K": // if the card is a King
-                    cardValue = 10; // set the value of the card to 10
+        int total = 0; 
+        for (Card card : cards) { 
+            int cardValue; 
+            switch (card.getValue()) {
+                case "J": 
+                case "Q": 
+                case "K":
+                    cardValue = 10; 
                     break;
-                case "A": // if the card is an Ace
-                    cardValue = 11; // set the value of the card to 11
+                case "A": 
+                    cardValue = 11; 
                     break;
-                default:
-                    cardValue = Integer.parseInt(card.getValue()); // set the value of the card to the integer value of the card
+                default: //for non-face cards
+                    // set the value of the card to the integer value of the card
+                    cardValue = Integer.parseInt(card.getValue()); 
                     break;
             }
             total += cardValue; // add the value of the card to the total
@@ -47,7 +48,8 @@ public class Hand {
         
         
         // Handle Aces dynamically
-        for(int i = 1; total > 21 && i <= aceCount; i++){// if the total is > 21, subtract 10 per Ace until total is <= 21
+        // if the total is > 21, subtract 10 per Ace until total is <= 21
+        for(int i = 1; total > 21 && i <= aceCount; i++){
             total -= 10;
         }
                      
@@ -56,6 +58,11 @@ public class Hand {
         }
 
         return total; // return the total value of the hand
+    }
+
+    void clearCards(){ //remove all cards from hand
+        cards.clear();
+        aceCount = 0;
     }
 
     List<Card> getCards() { // get the cards in the hand
@@ -70,24 +77,16 @@ public class Hand {
         return aceCount; // return the number of aces in the hand
     }
     
-/*    @Override
-    public String toString(){
-        String handValues = ""; // the values of the cards in the hand
-        for(Card card : cards){ // for each card in the hand
-            handValues += card.toString() + ","; // add the value of the card to the handValues string
-        }
-        return handValues; // return the values of the cards in the hand
-    }*/
-
     @Override
     public String toString() { // convert hand to string
-        StringBuilder handValues = new StringBuilder(); // the values of the cards in the hand
-        for (Card card : cards) { // for each card in the hand
-            handValues.append(card.getValue()).append("-").append(card.getSuit()).append(","); // add the value and suit of the card to the handValues string
+        StringBuilder handValues = new StringBuilder(); 
+        for (Card card : cards) { 
+            handValues.append(card.getValue()).append("-").append(card.getSuit()).append(","); 
         }
         if (handValues.length() > 0) {
             handValues.setLength(handValues.length() - 1); // remove the last comma
         }
+        
         return handValues.toString(); // return the values of the cards in the hand
     }
 

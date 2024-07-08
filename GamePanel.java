@@ -21,39 +21,40 @@ public class GamePanel extends JPanel implements ActionListener{
 
 		setLayout(null); // Disable layout manager for absolute positioning
 
-		menu = new Menu(); // Initialize menu
-		menu.setBounds(10, 10, 200, 30); // Example position
-		menu.addActionListener(this); // Add action listener
-		add(menu); // Add menu to panel
+		menu = new Menu();
+		menu.setBounds(10, 10, 200, 30);
+		menu.addActionListener(this);
+		add(menu);
 		
-		dealButton = new JButton("Deal"); // Initialize deal button
-		dealButton.setBounds(10, 50, 100, 30); // Example position
-		dealButton.addActionListener(this); // Add action listener
-		dealButton.setVisible(false); // Hide button
-		add(dealButton); // Add button to panel
+		dealButton = new JButton("Deal"); 
+		dealButton.setBounds(10, 50, 100, 30);
+		dealButton.addActionListener(this); 
+		dealButton.setVisible(false); //hide button - it will only appear for new game
+		add(dealButton); 
 
-		// Initialize game buttons
-		hitButton = new JButton("Hit"); // Initialize hit button
-		standButton = new JButton("Stand");  // Initialize stand button
-		hintButton = new JButton(resizeHintIcon(new ImageIcon("images/CardHint_Img.png"))); // Initialize hint button
+		//game play buttons
+		hitButton = new JButton("Hit");
+		standButton = new JButton("Stand"); 
+		hintButton = new JButton(resizeHintIcon(new ImageIcon("images/CardHint_Img.png")));
 
-		hitButton.setBounds(300, 500, 80, 60); // Example position
-		standButton.setBounds(400, 500, 80, 60); // Example position
-		hintButton.setBounds(710, 450, 70, 110); // Example position
+		hitButton.setBounds(300, 500, 80, 60); 
+		standButton.setBounds(400, 500, 80, 60); 
+		hintButton.setBounds(710, 450, 70, 110); 
 
-		hitButton.setVisible(false); // Hide button
-		standButton.setVisible(false); // Hide button
-		hintButton.setVisible(false); // Hide button
+		//hide buttons until after dealing cards
+		hitButton.setVisible(false); 
+		standButton.setVisible(false); 
+		hintButton.setVisible(false); 
 
-		hitButton.addActionListener(this); // Add action listener
-		standButton.addActionListener(this); // Add action listener
-		hintButton.addActionListener(this); // Add action listener
+		hitButton.addActionListener(this);
+		standButton.addActionListener(this);
+		hintButton.addActionListener(this); 
 
-		add(hitButton); // Add button to panel
-		add(standButton); // Add button to panel
-		add(hintButton); // Add button to panel
+		add(hitButton); 
+		add(standButton); 
+		add(hintButton); 
 
-		//Adds and customizes player and dealer score texts
+		//labels for dealer and player's scores
 		playerScoreLabel = new JLabel("Your Score: 0");
 		playerScoreLabel.setBounds(340, 445, 120, 40);
 		playerScoreLabel.setOpaque(true);
@@ -68,21 +69,21 @@ public class GamePanel extends JPanel implements ActionListener{
 		playerScoreLabel.setVisible(false);
 		dealerScoreLabel.setVisible(false);
 
-		// Initialize card panels
-		playerPanel = new JPanel(); // Initialize player panel
-		dealerPanel = new JPanel(); // Initialize dealer panel
-		playerPanel.setLayout(new GridLayout(1, 11)); // Set layout for player panel
-		dealerPanel.setLayout(new GridLayout(1, 11)); // Set layout for dealer panel
+		//panels to display cards
+		playerPanel = new JPanel();
+		dealerPanel = new JPanel();
+		playerPanel.setLayout(new GridLayout(1, 11)); 
+		dealerPanel.setLayout(new GridLayout(1, 11));
 
-		playerPanel.setOpaque(false); // Make the panel transparent
-		dealerPanel.setOpaque(false); // Make the panel transparent
+		playerPanel.setOpaque(false); 
+		dealerPanel.setOpaque(false); 
 
 		// Set bounds for player and dealer panels to make them flush with each other
-		playerPanel.setBounds(10, 310, 760, 135); // Example position
-		dealerPanel.setBounds(10, 130, 760, 135); // Example position
+		playerPanel.setBounds(10, 310, 760, 135); 
+		dealerPanel.setBounds(10, 130, 760, 135); 
 
-		add(playerPanel); // Add player panel to main panel
-		add(dealerPanel); // Add dealer panel to main panel
+		add(playerPanel); 
+		add(dealerPanel); 
 
 		//Leaderboard Panel
 		leaderBoard = new JPanel();
@@ -105,33 +106,41 @@ public class GamePanel extends JPanel implements ActionListener{
 		leaderBoard.add(variableTiesLabel);
 
 		add(leaderBoard); // Add leaderboard to main panel
-	 }
-
-	void setNewGame(){
-		leaderBoard.setVisible(true);
-		dealButton.setVisible(true);
 	}
 
-	void showGameButtons() { // Show game buttons
-		hitButton.setVisible(true); // Show button
-		standButton.setVisible(true); // Show button
-		hintButton.setVisible(true); // Show button
+	//methods to update gui
+
+	//resets gui for new game
+	void setNewGame(InternalGame.AppStates appState){//argument contains state of old game
+		if(appState == null){//if no old game at all - make components visible
+			leaderBoard.setVisible(true);
+			dealButton.setVisible(true);
+		}else if(appState == InternalGame.AppStates.BRAND_NEW_GAME){//if old game is brand new
+			return; //no change necessary to gui
+		}else{//if old game was in progress
+			resetGui();
+		}
+	}
+
+	//method to update gui after dealing cards
+	void updateGUIafterDeal() {
+		dealButton.setEnabled(false);
+
+		hitButton.setVisible(true); 
+		standButton.setVisible(true); 
+		hintButton.setVisible(true); 
 
 		//Display scores
 		playerScoreLabel.setVisible(true);
 		dealerScoreLabel.setVisible(true);
+		
+		updateCardPanelAfterDeal();
 	}
+	private void updateCardPanelAfterDeal() { //private method for cards panels
+		//gui reflects list of Card in InternalGame instance
+		List<Card> dealerCards = internal.getDealerHand().getCards();
 
-	JButton getDealButton(){ // Get deal button
-		return dealButton; // Return deal button
-	}
-
-	void updatePanelsDeal() { // Update card panels after deal
-		List<Card> playerCards = internal.getPlayerHand().getCards(); // Get player cards
-		List<Card> dealerCards = internal.getDealerHand().getCards(); // Get player cards
-
-		playerPanel.add(new CardFace(playerCards.get(0).getValue(), playerCards.get(0).getSuit()));
-		playerPanel.add(new CardFace(playerCards.get(1).getValue(), playerCards.get(1).getSuit()));
+		updatePlayersCardPanel();
 
 		dealerPanel.add(new CardFace(dealerCards.get(0).getValue(), dealerCards.get(0).getSuit()));
 		dealerPanel.add(new CardFace(dealerCards.get(1).getValue(), "Hidden"));
@@ -142,34 +151,38 @@ public class GamePanel extends JPanel implements ActionListener{
 		repaint();
 	}
 
-	void updatePlayerPanelHit(){ // Update player card panel after hit
-		Card newCard = internal.getPlayerHand().getLastCard();
-		playerPanel.add(new CardFace(newCard.getValue(), newCard.getSuit()));
-
-		playerScoreLabel.setText("Your Score: " + internal.getPlayerScore());
-
-		revalidate();
-		repaint();
+	void updateDealersCardPanel(){
+		updateCardPanel(dealerPanel, internal.getDealerHand(), dealerScoreLabel);
 	}
+	void updatePlayersCardPanel(){
+		updateCardPanel(playerPanel, internal.getPlayerHand(), playerScoreLabel);
+	}
+	private void updateCardPanel(JPanel cardPanel, Hand hand, JLabel scoreLabel) { // Update gui after stand
+		cardPanel.removeAll(); //remove cards from panel before repopulating
 
-	void updateDealersCardPanel() { // Update dealer card panel after stand
-		dealerPanel.removeAll(); //remove cards from panel before repopulating
-
-		List<Card> dealerCards = internal.getDealerHand().getCards(); // Get player cards
-		for (int i = 0; i < dealerCards.size(); i++) { // Loop through player cards and create new card faces
-			dealerPanel.add(new CardFace(dealerCards.get(i).getValue(), dealerCards.get(i).getSuit()));
+		List<Card> cards = hand.getCards();
+		for (int i = 0; i < cards.size(); i++) { // Loop through cards and create new card faces
+			cardPanel.add(new CardFace(cards.get(i).getValue(), cards.get(i).getSuit()));
 		}
 
-		dealerScoreLabel.setText("Dealer Score: " + internal.getDealerScore());
-
+		//update score labels
+		if(scoreLabel == playerScoreLabel){
+			scoreLabel.setText("Player Score: " + internal.getPlayerScore());
+		}else if(scoreLabel == dealerScoreLabel){
+			scoreLabel.setText("Dealer Score: " + internal.getDealerScore());
+		}
+			
 		revalidate();
 		repaint();
 	}
 
-	void resetGame() { // Reset game
-		hitButton.setVisible(false); // Hide game buttons
-		standButton.setVisible(false); // Hide game buttons
-		hintButton.setVisible(false); // Hide game buttons
+	void resetGui() { // Reset gui to prepare for new round. Update leaderboard.
+
+		//make game play button invisible
+		hitButton.setVisible(false); 
+		standButton.setVisible(false); 
+		hintButton.setVisible(false); 
+
 		dealButton.setEnabled(true); // Re-enable the Deal button for new round
 		
 		clearCardPanels(); // Clear card panels
@@ -193,17 +206,17 @@ public class GamePanel extends JPanel implements ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent e){  // Action listener for all GUI components
-         if(e.getSource() == menu){ // If menu is selected
-			String choice = (String) menu.getSelectedItem(); //	Get selected item
-			startGame.choiceSwitch(choice); // Switch to selected item
-		 }else if(e.getSource() == dealButton){ // If deal button is selected
-			internal.deal(); // Deal
-		 }else if(e.getSource() == hitButton){ // If hit button is selected
-			internal.hit(); // Hit
-		 }else if(e.getSource() == standButton){ //	If stand button is selected
-			internal.stand(); // Stand
-		 }else if(e.getSource() == hintButton){ // If hint button is selected
-			internal.hint(); // Hint
+         if(e.getSource() == menu){ 
+			String choice = (String) menu.getSelectedItem();
+			startGame.choiceSwitch(choice); 
+		 }else if(e.getSource() == dealButton){ 
+			internal.deal(); 
+		 }else if(e.getSource() == hitButton){ 
+			internal.hit(); 
+		 }else if(e.getSource() == standButton){ 
+			internal.stand(); 
+		 }else if(e.getSource() == hintButton){ 
+			internal.provideHint(); 
 		 }
     }
 

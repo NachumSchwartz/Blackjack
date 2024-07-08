@@ -1,23 +1,28 @@
 import javax.swing.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 
 // internal game logic
 public class InternalGame {
-    private int wins; //number of wins
-    private int losses; //number of losses
-    private int ties; //number of ties
-    private Deck deck; //deck of cards
-    private Hand playerHand; //player's hand
-    private Hand dealerHand; //dealer's hand
-    private String gameState;
-    private String gameName;
+    private final int SMALLEST_GOOD_DECK = 20;
+    private final int BLACKJACK = 21;
+    private final int DEALER_STAND = 17;
 
-    private GamePanel gui; //game panel
+    static enum AppStates{
+        BRAND_NEW_GAME,
+        MID_ROUND,
+        AFTER_ROUND
+    }
+
+    private GamePanel gui; 
     private boolean test;
+
+    private int wins; 
+    private int losses; 
+    private int ties; 
+    private Deck deck; 
+    private Hand playerHand;
+    private Hand dealerHand;
+    private AppStates appState;
 
     private enum Outcomes {
         WIN,
@@ -26,49 +31,57 @@ public class InternalGame {
     }
 
     public InternalGame(GamePanel gui, boolean test) {//constructor - test is true if game is in test mode
-        this.wins = 0; //initialize wins
-        this.losses = 0; //initialize losses
-        this.ties = 0; //initialize ties
-        this.gui = gui; //initialize gui
-        this.test = test; //initialize test
+        this.gui = gui; 
+        this.test = test;
     }
 
     //setters and getters
-    void setNewGameStats() {
-        wins = 0; //set wins to 0
-        losses = 0; //set losses to 0
-        ties = 0; //set ties to 0
+    void setNewGame() {
+        wins = 0; 
+        losses = 0; 
+        ties = 0; 
+
+        playerHand = new Hand(test); 
+        dealerHand = new Hand(test); 
+
+        setDeck();
+
+        appState = AppStates.BRAND_NEW_GAME;
     }
 
     void setDeck() {
         if (test) {//if test is true, test deck is instantiated
             deck = new Deck(test);
         } else {
-            deck = new Deck(); //create a new deck
+            deck = new Deck(); 
         }
     }
 
+    void setAppState(AppStates appState){
+        this.appState = appState;
+    }
+
     int getWins() {
-        return wins; //return wins
+        return wins;
     }
 
     int getLosses() {
-        return losses; //return losses
+        return losses; 
     }
 
     int getTies() {
-        return ties; //return ties
+        return ties; 
     }
 
     Deck getDeck() {
-        return deck; //return deck
+        return deck; 
     }
 
     Hand getPlayerHand(){
-        return playerHand; //return player's hand
+        return playerHand; 
     }
     Hand getDealerHand(){
-        return dealerHand; //return dealer's hand
+        return dealerHand; 
     }
 
     int getPlayerScore() {
@@ -79,28 +92,29 @@ public class InternalGame {
         return dealerHand.calculateHand();
     }
 
+    AppStates getAppState(){
+        return appState;
+    }
+
     //game methods
     void deal() {
+        appState = AppStates.MID_ROUND;
+
         //if current deck is too small, create a new deck
-        if (deck.getDeckSize() < 20) {
-            setDeck(); //set new deck
+        if (deck.getDeckSize() < SMALLEST_GOOD_DECK) {
+            setDeck(); 
         }
 
-        playerHand = new Hand(test); //create a new player's hand
-        dealerHand = new Hand(test); //create a new dealer's hand
+        playerHand.receiveCard(deck.drawCard()); 
+        playerHand.receiveCard(deck.drawCard()); 
+        dealerHand.receiveCard(deck.drawCard()); 
+        dealerHand.receiveCard(deck.drawCard()); 
 
-        playerHand.receiveCard(deck.drawCard()); //player receives a card
-        playerHand.receiveCard(deck.drawCard()); //player receives a card
-        dealerHand.receiveCard(deck.drawCard()); //dealer receives a card
-        dealerHand.receiveCard(deck.drawCard()); //dealer receives a card
-
-        gui.showGameButtons(); //show game buttons
-        gui.getDealButton().setEnabled(false);//disable the Deal button after clicked
-        gui.updatePanelsDeal(); //update cards panels on GUI
+        gui.updateGUIafterDeal(); //update GUI
 
         //check for blackjack after first deal
-        if (playerHand.calculateHand() == 21) {
-            if (dealerHand.calculateHand() == 21) { // if dealer also == 21 --> TIE, else --> player WIN
+        if (playerHand.calculateHand() == BLACKJACK) {
+            if (dealerHand.calculateHand() == BLACKJACK) { // if dealer also == 21 --> TIE, else --> player WIN
                 concludeRound(Outcomes.TIE);
             } else {
                 concludeRound(Outcomes.WIN);
@@ -110,12 +124,17 @@ public class InternalGame {
 
     void hit() { //method to hit
         playerHand.receiveCard(deck.drawCard()); //player receives a card
-        gui.updatePlayerPanelHit(); //update card panel
+        gui.updatePlayersCardPanel(); //update card panel on GUI
 
-        if (playerHand.calculateHand() > 21) { //if player's hand > 21 --> player busts --> LOSS
+        if(test){
+            System.out.println(playerHand);
+            System.out.println(playerHand.calculateHand());
+        }
+
+        if (playerHand.calculateHand() > BLACKJACK) { //if player's hand > 21 --> player busts --> LOSS
             concludeRound(Outcomes.LOSS);
-        } else if (playerHand.calculateHand() == 21) { //if player's hand == 21 --> check if dealer == 21
-            if (dealerHand.calculateHand() == 21) { // if dealer also == 21 --> TIE, else --> player WIN
+        } else if (playerHand.calculateHand() == BLACKJACK) { //if player's hand == 21 --> check if dealer == 21
+            if (dealerHand.calculateHand() == BLACKJACK) { // if dealer also == 21 --> TIE, else --> player WIN
                 concludeRound(Outcomes.TIE);
             } else {
                 concludeRound(Outcomes.WIN);
@@ -125,11 +144,9 @@ public class InternalGame {
 
     void stand() { //method to stand
         // Dealer's turn
-        while (dealerHand.calculateHand() < 17) { //while dealer's hand is less than 17
-            dealerHand.receiveCard(deck.drawCard()); //dealer receives a card
-        }
+        hitForDealer(); //hit for dealer until 17
 
-        if (dealerHand.calculateHand() > 21 ||
+        if (dealerHand.calculateHand() > BLACKJACK ||
                 playerHand.calculateHand() > dealerHand.calculateHand()) {
             concludeRound(Outcomes.WIN);
         } else if (playerHand.calculateHand() < dealerHand.calculateHand()) {
@@ -138,8 +155,13 @@ public class InternalGame {
             concludeRound(Outcomes.TIE);
         }
     }
+    private void hitForDealer(){ //for dealer's turn to hit
+        while (dealerHand.calculateHand() < DEALER_STAND) { //while dealer's hand is less than 17
+            dealerHand.receiveCard(deck.drawCard()); //dealer receives a card
+        }
+    }
 
-    void hint() { //method to give hint
+    void provideHint() { //method to give hint
         // Simple hint logic: recommend hitting if the player's hand is 16 or less
         if (playerHand.calculateHand() <= 16) { //if player's hand is less than or equal to 16
             JOptionPane.showMessageDialog(gui, "Hint: You should hit!");
@@ -166,38 +188,30 @@ public class InternalGame {
                 break;
         }
 
-        gui.resetGame(); //reset GUI
+        clearHands();
+        appState = AppStates.AFTER_ROUND;
+        gui.resetGui(); //reset GUI
     }
 
-    //database methods
-    public String getGameState() {
-        return gameState;
-    }
+    private void clearHands(){
+        playerHand.clearCards();
+        dealerHand.clearCards();
+    } 
 
-    public void setGameState(String gameState) {
-        this.gameState = gameState;
-    }
+    //database method
+    void loadGameState(Map<String, Object> gameState) {
+        setDeck();
 
-    public void updateGameStateWithTimestamp() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMMyyyy: HH:mm:ss'Z'", Locale.ENGLISH);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        this.gameState = dateFormat.format(new Date());
-    }
-
-    public void loadGameState(Map<String, Object> gameState) {
         this.wins = (int) gameState.get("wins");
         this.losses = (int) gameState.get("losses");
         this.ties = (int) gameState.get("ties");
-        this.gameState = (String) gameState.get("gameState");
 
-        // Assuming Hand has a method to load cards from a string
-        this.playerHand = Hand.fromString((String) gameState.get("playerHand"), test);
-        this.dealerHand = Hand.fromString((String) gameState.get("dealerHand"), test);
+        String playerHandString = (String) gameState.get("playerHand");
+        String dealerHandString = (String) gameState.get("dealerHand");
 
-        // Update GUI components based on the loaded state
-        gui.updatePanelsDeal();
-        gui.updatePlayerPanelHit();
-        gui.updateDealersCardPanel();
+        if(!playerHandString.equals("empty")){
+            this.playerHand = Hand.fromString(playerHandString, test);
+            this.dealerHand = Hand.fromString(dealerHandString, test);
+        }
     }
-    
 }
