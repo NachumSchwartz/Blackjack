@@ -2,11 +2,11 @@ import javax.swing.*;
 import java.util.Map;
 
 //Purpose: This class is used to start the game and switch between the different options in the menu.
-public class GameStart {
+public class GameLoader {
     private InternalGame internalGame; 
     private GamePanel gui; 
 
-    public GameStart(InternalGame internalGame, GamePanel gui){ //constructor
+    public GameLoader(InternalGame internalGame, GamePanel gui){ //constructor
         this.internalGame = internalGame; 
         this.gui = gui; 
     }

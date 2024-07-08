@@ -7,6 +7,7 @@ import java.util.Map;
 public class DatabaseManager {
     private static final String DATABASE_URL = "jdbc:sqlite:CMSC495T3BlackJackState.db";
 
+    //methods to create database if none exists
     public static void initializeDatabase() {
         try (Connection connection = DriverManager.getConnection(DATABASE_URL)) {
             if (connection != null) {
@@ -37,6 +38,7 @@ public class DatabaseManager {
         }
     }
 
+    //method to save data in database
     public static void saveGameState(String gameName, int playerScore,  int dealerScore, String playerHand, String dealerHand, int wins, int losses, int ties) {
         String sql = "INSERT INTO GameStates(gameName, playerScore, dealerScore, playerHand, dealerHand, wins, losses, ties) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -56,6 +58,7 @@ public class DatabaseManager {
         }
     }
 
+    //method to return a String[] of names of saved games
     public static String[] getGameNames() {
         List<String> gameNames = new ArrayList<>();
         String sql = "SELECT gameName FROM GameStates";
@@ -67,11 +70,12 @@ public class DatabaseManager {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            gameNames.add("-----");
+            gameNames.add("------------------");
         }
         return gameNames.toArray(new String[0]);
     }
 
+    //method to query database for a game based on its name, and return game data
     public static Map<String, Object> getGameStateByGameName(String gameName) {
         Map<String, Object> gameState = new HashMap<>();
         String sql = "SELECT gameName, playerScore, dealerScore, playerHand, dealerHand, wins, losses, ties FROM GameStates WHERE gameName = ?";

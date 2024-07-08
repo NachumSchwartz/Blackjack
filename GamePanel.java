@@ -7,7 +7,7 @@ import java.util.List;
 // GamePanel class
 public class GamePanel extends JPanel implements ActionListener{
 	private InternalGame internal; // Internal game logic
-	private GameStart startGame; // Start game logic
+	private GameLoader gameLoader; // Start game logic
 
 	private JPanel playerPanel, dealerPanel, leaderBoard;
 	private JButton dealButton, hitButton, standButton, hintButton; // Game buttons
@@ -17,7 +17,7 @@ public class GamePanel extends JPanel implements ActionListener{
 
 	public GamePanel(boolean test){//test is true if game is in test mode
 		internal = new InternalGame(this, test);
-		startGame = new GameStart(internal, this);
+		gameLoader = new GameLoader(internal, this);
 
 		setLayout(null); // Disable layout manager for absolute positioning
 
@@ -150,7 +150,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		variableTiesLabel.setText(Integer.toString(internal.getTies()));
 	}
 
-	private void clearCardPanels() { // Clear card panels
+	private void clearCardPanels() {
 		playerPanel.removeAll();
 		dealerPanel.removeAll();
 	}
@@ -210,11 +210,11 @@ public class GamePanel extends JPanel implements ActionListener{
 		repaint();
 	}
 
-
-	public void actionPerformed(ActionEvent e){  // Action listener for all GUI components
+ 	// Action listener for all GUI components
+	public void actionPerformed(ActionEvent e){ 
          if(e.getSource() == menu){ 
 			String choice = (String) menu.getSelectedItem();
-			startGame.choiceSwitch(choice); 
+			gameLoader.choiceSwitch(choice); 
 		 }else if(e.getSource() == dealButton){ 
 			internal.deal(); 
 		 }else if(e.getSource() == hitButton){ 
